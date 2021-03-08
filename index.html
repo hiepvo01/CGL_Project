@@ -3,8 +3,9 @@
 
 <head>
 	<title>Pie Chart</title>
-	<script src="ChartJS/Chart.min.js"></script>
-	<script src="../utils.js"></script>
+	<script src=""></script>
+	<script src="chart.js-2.9.4\package\dist\Chart.min.js"></script>
+    <script src="chart.js-2.9.4\package\dist\Chart.bundle.js"></script>
 </head>
 
 <body>
@@ -15,6 +16,16 @@
 	<button id="addDataset">Add Dataset</button>
 	<button id="removeDataset">Remove Dataset</button>
 	<script>
+        window.chartColors = {
+            red: 'rgb(255, 99, 132)',
+            orange: 'rgb(255, 159, 64)',
+            yellow: 'rgb(255, 205, 86)',
+            green: 'rgb(75, 192, 192)',
+            blue: 'rgb(54, 162, 235)',
+            purple: 'rgb(153, 102, 255)',
+            grey: 'rgb(231,233,237)'
+        };
+
 		var randomScalingFactor = function() {
 			return Math.round(Math.random() * 100);
 		};
@@ -45,8 +56,13 @@
 					'Yellow',
 					'Green',
 					'Blue'
-				]
+				],
+			
+				datalabels: {
+					anchor: 'center'
+				},
 			},
+
 			options: {
 				responsive: true
 			}
@@ -54,7 +70,7 @@
 
 		window.onload = function() {
 			var ctx = document.getElementById('chart-area').getContext('2d');
-			window.myPie = new Chart(ctx, config);
+			window.myPie = new Chart(ctx, config) ;
 		};
 
 		document.getElementById('randomizeData').addEventListener('click', function() {

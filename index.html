@@ -60,14 +60,40 @@
 					'Green',
 					'Blue'
 				],
-			
-				datalabels: {
-					anchor: 'center'
-				},
 			},
 
 			options: {
-				responsive: true
+				responsive: true,
+                plugins: {
+                    datalabels: {
+                        align: function(context) {
+                          var index = context.dataIndex;
+                          var curr = context.dataset.data[index];
+                          var prev = context.dataset.data[index - 1];
+                          var next = context.dataset.data[index + 1];
+                          return prev < curr && next < curr ? 'end' :
+                            prev > curr && next > curr ? 'start' :
+                            'center';
+                        },
+                        backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                        borderColor: 'rgba(128, 128, 128, 0.7)',
+                        borderRadius: 4,
+                        borderWidth: 1,
+                        color: function(context) {
+                          var i = context.dataIndex;
+                          var value = context.dataset.data[i];
+                          var prev = context.dataset.data[i - 1];
+                          var diff = prev !== undefined ? value - prev : 0;
+                          return diff < 0 ? Utils.color(0) :
+                            diff > 0 ? Utils.color(1) :
+                            'gray';
+                        },
+                        font: {
+                          size: 11,
+                          weight: 'bold',
+                        }
+                    }
+                }
 			}
 		};
 

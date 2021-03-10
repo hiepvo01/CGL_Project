@@ -1,5 +1,8 @@
 Chart.defaults.global.defaultFontFamily = 'Roboto';
 Chart.defaults.global.defaultFontColor = '#333';
+Chart.Legend.prototype.afterFit = function() {
+  this.height = this.height + 5;
+};
 
 Chart.pluginService.register({
     beforeDraw: function(chart) {

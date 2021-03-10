@@ -8,6 +8,10 @@ body {
     text-align: center;
     margin-bottom: 10px;
   }
+
+  .row {
+    margin-bottom: 10px;
+  }
   
   #title {
     font-family: 'Merriweather';

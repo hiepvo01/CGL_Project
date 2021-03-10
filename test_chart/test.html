@@ -2,6 +2,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="test.css">
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
@@ -12,6 +13,17 @@
     </head>
     <body>
         <div id="title">Number of Students per Term per Year</div>
+        <div class="dropdown">
+          <a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            Select Attribute
+          </a>
+        
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li><a class="dropdown-item" onclick="draw('Term')">Term</a></li>
+            <li><a class="dropdown-item" onclick="draw('Special_Program')">Special_Program</a></li>
+            <li><a class="dropdown-item" onclick="draw('Gender')">Gender</a></li>
+          </ul>
+        </div>
         <div class="container-fluid">
             <div class="row">
               <div class="col-6">

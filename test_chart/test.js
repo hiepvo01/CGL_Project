@@ -85,32 +85,53 @@ Chart.pluginService.register({
     }
   });
 
-colors =['rgb(255, 99, 132)',
-    'rgb(255, 159, 64)',
-    'rgb(255, 205, 86)',
-    'rgb(75, 192, 192)',
-    'rgb(54, 162, 235)',
-    'rgb(153, 102, 255)',
-    'rgb(231,233,237)'
-]
+function resetCanvas(){
+  $('.container-fluid').remove();
+  $('body').append('<div class="container-fluid"></div>')
+  for (let i=1; i<9; i+=2) {
+    $('.container-fluid').append(`
+    <div class="row">
+      <div class="col-6">
+        <canvas id="chart${i}"></canvas>
+      </div>
+      <div class="col-6">
+        <canvas id="chart${i+1}"></canvas>
+      </div>
+    </div>`)
+  }
+}
 
-function testChartPie(students, year, chartid) {
+function changeTitle(title){
+  var origin = document.querySelector("#title"); 
+  origin.innerHTML = `Number of Students per ${title} per Year`;
+}
+
+function testChartPie(students, year, attr, chartid) {
+  
     students = students.filter(function(d){ return d.Academic_Year == year });
-    var terms = d3.group(students, d => d.Term);
+    var terms = d3.group(students, d => d[attr]);
     terms_data = []
     terms_labels = []
     terms_colors = []
 
-    for (val of terms.values()) {
-        terms_data.push(val.length);
+    var keyValues = []
+    for (key of terms.keys()) {
+      keyValues.push([ key, terms.get(key).length ])
     }
-    let idx = 0;
-    for (val of terms.keys()) {
-        terms_labels.push(val);
-        terms_colors.push(colors[idx]);
-        idx += 1
+    keyValues.sort(function compare(kv1, kv2) {
+      return kv2[0].localeCompare(kv1[0])
+    })
+
+    for (val of keyValues) {
+      terms_labels.push(val[0]);
+      terms_data.push(val[1]);
     }
 
+    var myColor = d3.scaleOrdinal().domain(terms_labels)
+    .range(d3.schemeSet2)
+    for (val of keyValues) {
+      terms_colors.push(myColor(val[0]))
+    }
     var chart = new Chart(chartid, {
         type: 'doughnut',
         options: {
@@ -138,7 +159,7 @@ function testChartPie(students, year, chartid) {
                   borderRadius: 50,
                   borderWidth: 5,
                   color: 'white',
-                  anchor:'center',
+                  anchor:'end',
             },
         },
         },
@@ -154,23 +175,31 @@ function testChartPie(students, year, chartid) {
       })
     }
 
-function testChartBar(students, year, chartid) {
+function testChartBar(students, year, attr, chartid) {
     students = students.filter(function(d){ return d.Academic_Year == year });
-    var terms = d3.group(students, d => d.Term);
+    var terms = d3.group(students, d => d[attr]);
     terms_data = []
     terms_labels = []
     terms_colors = []
 
-    for (val of terms.values()) {
-        terms_data.push(val.length);
+    var keyValues = []
+    for (key of terms.keys()) {
+      keyValues.push([ key, terms.get(key).length ])
     }
-    let idx = 0;
-    for (val of terms.keys()) {
-        terms_labels.push(val);
-        terms_colors.push(colors[idx]);
-        idx += 1
+    keyValues.sort(function compare(kv1, kv2) {
+      return kv2[0].localeCompare(kv1[0])
+    })
+
+    for (val of keyValues) {
+      terms_labels.push(val[0]);
+      terms_data.push(val[1]);
     }
 
+    var myColor = d3.scaleOrdinal().domain(terms_labels)
+    .range(d3.schemeSet2)
+    for (val of keyValues) {
+      terms_colors.push(myColor(val[0]))
+    }
     var chart = new Chart(chartid, {
         type: 'bar',
         options: {
@@ -197,7 +226,7 @@ function testChartBar(students, year, chartid) {
                     borderRadius: 50,
                     borderWidth: 5,
                     color: 'white',
-                    anchor:'center',
+                    anchor:'end',
             },
         },
           scales: {
@@ -205,7 +234,7 @@ function testChartBar(students, year, chartid) {
               {
                 scaleLabel: {
                   display: true,
-                  labelString: 'Terms',
+                  labelString: attr,
                   fontSize: 16
                 }
               }
@@ -224,19 +253,25 @@ function testChartBar(students, year, chartid) {
         })
     }
 
-d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
-    testChartPie(result, "2015-16", 'chart1');
-    testChartPie(result, "2016-17", 'chart3');
-    testChartPie(result, "2017-18", 'chart5');
-    testChartPie(result, "2018-19", 'chart7');
-});
+function draw(attr){
+  resetCanvas();
+  d3.select('canvas').selectAll('*').remove();
 
-d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
-    testChartBar(result, "2015-16", 'chart2');
-    testChartBar(result, "2016-17", 'chart4');
-    testChartBar(result, "2017-18", 'chart6');
-    testChartBar(result, "2018-19", 'chart8');
-});
+  d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
+      testChartPie(result, "2015-16", attr, 'chart1');
+      testChartPie(result, "2016-17", attr, 'chart3');
+      testChartPie(result, "2017-18", attr, 'chart5');
+      testChartPie(result, "2018-19", attr, 'chart7');
+      changeTitle(attr)
+  });
+  
+  d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
+      testChartBar(result, "2015-16", attr, 'chart2');
+      testChartBar(result, "2016-17", attr, 'chart4');
+      testChartBar(result, "2017-18", attr, 'chart6');
+      testChartBar(result, "2018-19", attr, 'chart8');
+  });
+}
 
 
 // d3.csv('http://127.0.0.1:5000/all_data.csv').then(function(result) {

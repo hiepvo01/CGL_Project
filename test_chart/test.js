@@ -227,12 +227,17 @@ function testChartBar(students, year, chartid) {
 d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
     testChartPie(result, "2015-16", 'chart1');
     testChartPie(result, "2016-17", 'chart3');
+    testChartPie(result, "2017-18", 'chart5');
+    testChartPie(result, "2018-19", 'chart7');
 });
 
 d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
     testChartBar(result, "2015-16", 'chart2');
     testChartBar(result, "2016-17", 'chart4');
+    testChartBar(result, "2017-18", 'chart6');
+    testChartBar(result, "2018-19", 'chart8');
 });
+
 
 // d3.csv('http://127.0.0.1:5000/all_data.csv').then(function(result) {
 //     testChartPie(result, "2015-16", 'chart1');

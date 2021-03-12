@@ -1,113 +1,209 @@
 <!doctype html>
-<html>
-
-<head>
-	<title>Pie Chart</title>
-	<script src=""></script>
+<html lang="en">
+  <head>
+	<link rel="stylesheet" href="home.css">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"></script>
-</head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
+	<script src="https://d3js.org/d3.v6.min.js"></script>
 
-<body>
-	<div id="canvas-holder" style="width:40%">
-		<canvas id="chart-area"></canvas>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.80.0">
+    <title>CGL Project</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/blog/">
+
+    <style>
+		.bd-placeholder-img {
+		  font-size: 1.125rem;
+		  text-anchor: middle;
+		  -webkit-user-select: none;
+		  -moz-user-select: none;
+		  user-select: none;
+		}
+  
+		@media (min-width: 768px) {
+		  .bd-placeholder-img-lg {
+			font-size: 3.5rem;
+		  }
+		}
+	  </style>
+  
+	  
+	</head>
+	<body>
+	  
+  <header>
+	<div class="collapse bg-dark" id="navbarHeader">
+	  <div class="container">
+		<div class="row">
+		  <div class="col-sm-8 col-md-7 py-4">
+			<h4 class="text-white">About</h4>
+			<p class="text-muted">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.</p>
+		  </div>
+		  <div class="col-sm-4 offset-md-1 py-4">
+			<h4 class="text-white">Contact</h4>
+			<ul class="list-unstyled">
+			  <li><a href="#" class="text-white">Follow on Twitter</a></li>
+			  <li><a href="#" class="text-white">Like on Facebook</a></li>
+			  <li><a href="#" class="text-white">Email me</a></li>
+			</ul>
+		  </div>
+		</div>
+	  </div>
 	</div>
-	<button id="randomizeData">Randomize Data</button>
-	<button id="addDataset">Add Dataset</button>
-	<button id="removeDataset">Remove Dataset</button>
-	<script>
-        window.chartColors = {
-            red: 'rgb(255, 99, 132)',
-            orange: 'rgb(255, 159, 64)',
-            yellow: 'rgb(255, 205, 86)',
-            green: 'rgb(75, 192, 192)',
-            blue: 'rgb(54, 162, 235)',
-            purple: 'rgb(153, 102, 255)',
-            grey: 'rgb(231,233,237)'
-        };
-
-		var randomScalingFactor = function() {
-			return Math.round(Math.random() * 100);
-		};
-
-		var config = {
-			type: 'pie',
-			data: {
-				datasets: [{
-					data: [
-						randomScalingFactor(),
-						randomScalingFactor(),
-						randomScalingFactor(),
-						randomScalingFactor(),
-						randomScalingFactor(),
-					],
-					backgroundColor: [
-						window.chartColors.red,
-						window.chartColors.orange,
-						window.chartColors.yellow,
-						window.chartColors.green,
-						window.chartColors.blue,
-					],
-					label: 'Dataset 1'
-				}],
-				labels: [
-					'Red',
-					'Orange',
-					'Yellow',
-					'Green',
-					'Blue'
-				],
-			
-				datalabels: {
-					anchor: 'center'
-				},
-			},
-
-			options: {
-				responsive: true
-			}
-		};
-
-		window.onload = function() {
-			var ctx = document.getElementById('chart-area').getContext('2d');
-			window.myPie = new Chart(ctx, config) ;
-		};
-
-		document.getElementById('randomizeData').addEventListener('click', function() {
-			config.data.datasets.forEach(function(dataset) {
-				dataset.data = dataset.data.map(function() {
-					return randomScalingFactor();
-				});
-			});
-
-			window.myPie.update();
-		});
-
-		var colorNames = Object.keys(window.chartColors);
-		document.getElementById('addDataset').addEventListener('click', function() {
-			var newDataset = {
-				backgroundColor: [],
-				data: [],
-				label: 'New dataset ' + config.data.datasets.length,
-			};
-
-			for (var index = 0; index < config.data.labels.length; ++index) {
-				newDataset.data.push(randomScalingFactor());
-
-				var colorName = colorNames[index % colorNames.length];
-				var newColor = window.chartColors[colorName];
-				newDataset.backgroundColor.push(newColor);
-			}
-
-			config.data.datasets.push(newDataset);
-			window.myPie.update();
-		});
-
-		document.getElementById('removeDataset').addEventListener('click', function() {
-			config.data.datasets.splice(0, 1);
-			window.myPie.update();
-		});
-	</script>
-</body>
-
-</html>
+	<div class="navbar navbar-dark bg-dark shadow-sm">
+	  <div class="container">
+		<a href="home.html" class="navbar-brand d-flex align-items-center">
+		  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+		  <strong>CGL Home</strong>
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+		  <span class="navbar-toggler-icon"></span>
+		</button>
+	  </div>
+	</div>
+  </header>
+  
+  <main>
+  
+	<section class="py-5 text-center container">
+	  <div class="row py-lg-5">
+		<div class="col-lg-5 col-md-8 mx-auto">
+		  <h1 class="fw-light">CGL Project Visualization</h1>
+		  <p class="lead text-muted">This website contains various visualization techniques that are Fun and Interactive.</p>
+		</div>
+	  </div>
+	</section>
+  
+	<div class="album py-5 bg-light">
+	  <div class="container">
+  
+		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+		  <div class="col">
+			<div class="card shadow-sm">
+				<img src="images/pie_bar.png" alt="Pie Bar"width="100%" height="256">
+  
+			  <div class="card-body">
+				<p class="card-text">Simple Pie and Bar Charts</p>
+				<div class="d-flex justify-content-between align-items-center">
+				  <div class="btn-group">
+					<a href="test_chart/test.html">
+						<button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+					</a>
+					
+				  </div>
+				  <small class="text-muted">9 mins</small>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		  <div class="col">
+			<div class="card shadow-sm">
+				<img src="images/world_map.png" alt="World Map"width="100%" height="256">
+  
+			  <div class="card-body">
+				<p class="card-text">World Map</p>
+				<div class="d-flex justify-content-between align-items-center">
+					<div class="btn-group">
+						<a href="world_map/world_map.html" target="_blank">
+							<button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+						</a>
+						
+					  </div>
+				  <small class="text-muted">9 mins</small>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		  <div class="col">
+			<div class="card shadow-sm">
+				<img src="images/stack_pie.png" alt="Nested Pie"width="100%" height="256">
+  
+			  <div class="card-body">
+				<p class="card-text">Nested Pie Chart</p>
+				<div class="d-flex justify-content-between align-items-center">
+					<div class="btn-group">
+						<a href="stackpie/stack_pie.html">
+							<button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+						</a>
+						
+					  </div>
+				  <small class="text-muted">9 mins</small>
+				</div>
+			  </div>
+			</div>
+		  </div>
+  
+		  <div class="col">
+			<div class="card shadow-sm">
+			  <svg class="bd-placeholder-img card-img-top" width="100%" height="256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+  
+			  <div class="card-body">
+				<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+				<div class="d-flex justify-content-between align-items-center">
+				  <div class="btn-group">
+					<button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+					
+				  </div>
+				  <small class="text-muted">9 mins</small>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		  <div class="col">
+			<div class="card shadow-sm">
+			  <svg class="bd-placeholder-img card-img-top" width="100%" height="256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+  
+			  <div class="card-body">
+				<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+				<div class="d-flex justify-content-between align-items-center">
+				  <div class="btn-group">
+					<button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+					
+				  </div>
+				  <small class="text-muted">9 mins</small>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		  <div class="col">
+			<div class="card shadow-sm">
+			  <svg class="bd-placeholder-img card-img-top" width="100%" height="256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+  
+			  <div class="card-body">
+				<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+				<div class="d-flex justify-content-between align-items-center">
+				  <div class="btn-group">
+					<button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+					
+				  </div>
+				  <small class="text-muted">9 mins</small>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  
+  </main>
+  
+  <footer class="text-muted py-5">
+	<div class="container">
+	  <p class="float-end mb-1">
+		<a href="#">Back to top</a>
+	  </p>
+	  <p class="mb-0"><a href="/">Please check out my source code</a></p>
+	</div>
+  </footer>  
+		
+	</body>
+  </html>
+  

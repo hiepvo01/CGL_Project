@@ -9,6 +9,10 @@ body {
     margin-bottom: 10px;
   }
 
+  .navbar {
+    margin-top: 0px
+  }
+
   .row {
     margin-bottom: 10px;
   }

@@ -1,18 +1,18 @@
 // const { group } = require("d3-array");
 
-var labels = []
-prior_data = {}
-for(let i=1; i < 10; i++) {
-    prior_data[String(i)] = []
-}
-d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
+function testStackBar(result, attr){
+    var labels = []
+    prior_data = {}
+    for(let i=1; i < 10; i++) {
+        prior_data[String(i)] = []
+    }
     let students = result.filter(function(d){ return d.Academic_Year != "2014-15" });
     var nested_data = d3.nest()
-        .key(function(d) { return d.Special_Program; })
+        .key(function(d) { return d[attr]; })
         .key(function(d) { return d["Prior Terms"]; })
         .entries(students)
     for (group of nested_data){
-        if (group.key != "Luther J-Term"){
+        if (group.key != "" && group.key!= "Luther J-Term"){
             labels.push(group.key)
             let notcheck = [];
             for(let i=1; i < 10; i++) {
@@ -32,35 +32,28 @@ d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
                 prior_data[remain].push(0)
             }
         }
-        console.log(prior_data)
+    };
+    let terms_colors = [];
+    for(let i=1; i < 10; i++) {
+        terms_colors.push(String(i))
     }
-});
-
-let terms_colors = [];
-for(let i=1; i < 10; i++) {
-    terms_colors.push(String(i))
-}
-var myColor = d3.scaleOrdinal().domain(terms_colors)
-    .range(d3.schemeSet2)
-
-let datasets = [];
-for (priorTerm in prior_data){
-    let partial = {
-        label: priorTerm,
-        backgroundColor: myColor(priorTerm),
-        data: prior_data[priorTerm]
+    var myColor = d3.scaleOrdinal().domain(terms_colors)
+        .range(d3.schemeSet2)
+    
+    let datasets = [];
+    for (priorTerm in prior_data){
+        let partial = {
+            label: priorTerm,
+            backgroundColor: myColor(priorTerm),
+            data: prior_data[priorTerm]
+        }
+        datasets.push(partial);
     }
-    datasets.push(partial);
-}
+    var barChartData = {
+        labels: labels,
+        datasets: datasets,
+    };
 
-
-var barChartData = {
-    labels: labels,
-    datasets: datasets,
-
-};
-
-window.onload = function() {
     var ctx = document.getElementById('canvas').getContext('2d');
     var chart = new Chart(ctx, {
         type: 'bar',
@@ -85,8 +78,8 @@ window.onload = function() {
               },
           },
             title: {
-                display: true,
-                text: 'Stacked Bar of Prior Terms per Special Program'
+                display: false,
+                text: 'Stacked Bar Chart of Prior Terms'
             },
             tooltips: {
                 mode: 'index',
@@ -103,4 +96,24 @@ window.onload = function() {
             }
         }
     });
-};
+}
+function changeTitle(title){
+    var origin = document.querySelector("#title"); 
+    origin.innerHTML = `${title} Stacked Bar Chart of Prior Terms `;
+}
+
+function resetCanvas(){
+    $('#canvas').remove();
+    $('.stackbar').append('<canvas id="canvas"></canvas>')
+  }
+  
+
+function draw(attr){
+    resetCanvas();
+    d3.select('canvas').selectAll('*').remove();
+  
+    d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
+        testStackBar(result, attr);
+        changeTitle(attr)
+    });
+  }

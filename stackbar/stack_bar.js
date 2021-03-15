@@ -87,7 +87,7 @@ window.onload = function() {
           },
             title: {
                 display: true,
-                text: 'Chart.js Bar Chart - Stacked'
+                text: 'Stacked Bar of Prior Terms per Special Program'
             },
             tooltips: {
                 mode: 'index',

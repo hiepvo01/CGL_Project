@@ -62,7 +62,7 @@ var barChartData = {
 window.onload = function() {
     var ctx = document.getElementById('canvas').getContext('2d');
     window.myBar = new Chart(ctx, {
-        type: 'line',
+        type: 'bar',
         data: barChartData,
         options: {
             barStrokeWidth:0,

@@ -12,31 +12,28 @@ d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
         .key(function(d) { return d["Prior Terms"]; })
         .entries(students)
     for (group of nested_data){
-        labels.push(group.key)
-        for (k in prior_data){
-            if (k in group.values) {
-                prior_data[k].push()
+        if (group.key != "Luther J-Term"){
+            labels.push(group.key)
+            let notcheck = [];
+            for(let i=1; i < 10; i++) {
+                notcheck.push(String(i))
+            }
+            for (val of group.values) {
+                try{
+                    prior_data[val.key].push(val.values.length)
+                    notcheck = notcheck.filter(function(item) {
+                        return item !== val.key
+                    })
+                } catch(err){
+                    continue
+                }
+            }
+            for (remain of notcheck) {
+                prior_data[remain].push(0)
             }
         }
-        let notcheck = [];
-        for(let i=1; i < 10; i++) {
-            notcheck.push(String(i))
-        }
-        for (val of group.values) {
-            try{
-                prior_data[val.key].push(val.values.length)
-                notcheck = notcheck.filter(function(item) {
-                    return item !== val.key
-                })
-            } catch(err){
-                continue
-            }
-        }
-        for (remain of notcheck) {
-            prior_data[remain].push(0)
-        }
+        console.log(prior_data)
     }
-    console.log(prior_data)
 });
 
 let terms_colors = [];
@@ -82,7 +79,8 @@ window.onload = function() {
                         value = "";
                         return value;
                     }
-                  }
+                  },
+                  anchor:'center'
               },
           },
             title: {

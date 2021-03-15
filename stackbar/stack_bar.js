@@ -59,9 +59,10 @@ var barChartData = {
     datasets: datasets,
 
 };
+
 window.onload = function() {
     var ctx = document.getElementById('canvas').getContext('2d');
-    window.myBar = new Chart(ctx, {
+    var chart = new Chart(ctx, {
         type: 'bar',
         data: barChartData,
         options: {

@@ -1,9 +1,9 @@
-const { group } = require("d3-array");
+// const { group } = require("d3-array");
 
 var labels = []
 prior_data = {}
 for(let i=1; i < 10; i++) {
-    prior_data[i] = []
+    prior_data[String(i)] = []
 }
 d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
     let students = result.filter(function(d){ return d.Academic_Year != "2014-15" });
@@ -18,52 +18,48 @@ d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
                 prior_data[k].push()
             }
         }
+        let notcheck = [];
+        for(let i=1; i < 10; i++) {
+            notcheck.push(String(i))
+        }
         for (val of group.values) {
-            prior_data[val].push(val.values.length)
+            try{
+                prior_data[val.key].push(val.values.length)
+                notcheck = notcheck.filter(function(item) {
+                    return item !== val.key
+                })
+            } catch(err){
+                continue
+            }
+        }
+        for (remain of notcheck) {
+            prior_data[remain].push(0)
         }
     }
+    console.log(prior_data)
 });
+
+let terms_colors = [];
+for(let i=1; i < 10; i++) {
+    terms_colors.push(String(i))
+}
+var myColor = d3.scaleOrdinal().domain(terms_colors)
+    .range(d3.schemeSet2)
+
+let datasets = [];
+for (priorTerm in prior_data){
+    let partial = {
+        label: priorTerm,
+        backgroundColor: myColor(priorTerm),
+        data: prior_data[priorTerm]
+    }
+    datasets.push(partial);
+}
 
 
 var barChartData = {
     labels: labels,
-    datasets: [{
-        label: 'Dataset 1',
-        backgroundColor: window.chartColors.red,
-        data: [
-            randomScalingFactor(),
-            randomScalingFactor(),
-            randomScalingFactor(),
-            randomScalingFactor(), 
-            randomScalingFactor(),
-            randomScalingFactor(),
-            randomScalingFactor()
-        ]
-    }, {
-        label: 'Dataset 2',
-        backgroundColor: window.chartColors.blue,
-        data: [
-            randomScalingFactor(),
-            randomScalingFactor(),
-            randomScalingFactor(),
-            randomScalingFactor(),
-            randomScalingFactor(),
-            randomScalingFactor(),
-            randomScalingFactor()
-        ]
-    }, {
-        label: 'Dataset 3',
-        backgroundColor: window.chartColors.green,
-        data: [
-            randomScalingFactor(),
-            randomScalingFactor(),
-            randomScalingFactor(),
-            randomScalingFactor(),
-            randomScalingFactor(),
-            randomScalingFactor(),
-            randomScalingFactor()
-        ]
-    }]
+    datasets: datasets,
 
 };
 window.onload = function() {
@@ -72,6 +68,23 @@ window.onload = function() {
         type: 'bar',
         data: barChartData,
         options: {
+            barStrokeWidth:0,
+            barShowStroke: false,
+            plugins: {
+              datalabels: {
+                  formatter: function (value, index, values) {
+                    if(value >0 ){
+                        value = value.toString();
+                        value = value.split(/(?=(?:...)*$)/);
+                        value = value.join(',');
+                        return value;
+                    }else{
+                        value = "";
+                        return value;
+                    }
+                  }
+              },
+          },
             title: {
                 display: true,
                 text: 'Chart.js Bar Chart - Stacked'

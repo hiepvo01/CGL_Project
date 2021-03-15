@@ -222,7 +222,7 @@ function testChartPie(students, year, attr, chartid) {
                 let labels = [];
                 config.data.datasets.filter(function(ds, iDs) {return iDs ==0}).forEach((ds, iDs) => labels = labels.concat(ds.labels.map((l, iLabel) => ({
                   datasetIndex: iDs,
-                  labelIndex: iLabel,
+                  labelIndex: iLabel, 
                   text: l,
                   fillStyle: ds.backgroundColor[iLabel],
                   hidden: chart ? chart.getDatasetMeta(iDs).data[iLabel].hidden : false,

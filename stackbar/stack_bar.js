@@ -15,6 +15,13 @@ function testStackBar(result, attr){
 
     for (group of nested_data){
         if (group.key != "" && group.key!= "Luther J-Term"){
+            try {
+                musics = group.key.split(", ")
+                if (musics.length == 2 && musics.pop()==""){
+                    group.key = musics[0]
+                }
+            } catch (e) {
+            }
             labels.push(group.key)
             let notcheck = [];
             for(let i=1; i < 10; i++) {
@@ -70,6 +77,9 @@ function testStackBar(result, attr){
     for(let i =1; i < 10; i++) {
         prior_data[String(i)] = prior_data[String(i)].filter(item => item !== " ")
     }
+
+    console.log(prior_data)
+    console.log(labels)
 
     let datasets = [];
     for (priorTerm in prior_data){

@@ -7,8 +7,11 @@ function testStackBar(result, attr){
     let students = result.filter(function(d){ return d.Academic_Year != "2014-15" });
     var nested_data = d3.nest()
         .key(function(d) { return d[attr]; })
+        .sortKeys(d3.ascending)
         .key(function(d) { return d["Prior Terms"]; })
         .entries(students)
+
+    console.log(nested_data)
 
     for (group of nested_data){
         if (group.key != "" && group.key!= "Luther J-Term"){
@@ -57,11 +60,8 @@ function testStackBar(result, attr){
             comma.push(labels.indexOf(l))
         }
     }
-    console.log(comma)
-    console.log(labels)
     for (c of comma) {
         labels[c]= " ";
-        console.log(labels)
         for(let i =1; i < 10; i++) {
             prior_data[String(i)][c] = " "
         }

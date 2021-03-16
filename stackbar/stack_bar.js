@@ -1,4 +1,9 @@
-// const { group } = require("d3-array");
+function convert(obj) {
+    return Object.keys(obj).map(key => ({
+        key: key,
+        values: obj[key],
+    }));
+}
 
 function testStackBar(result, attr){
     var labels = []
@@ -11,6 +16,31 @@ function testStackBar(result, attr){
         .key(function(d) { return d[attr]; })
         .key(function(d) { return d["Prior Terms"]; })
         .entries(students)
+
+    // let newNest = {}
+    // for (item of nested_data) {
+    //     newNest[item.key] = {}
+    //     for (val of item.values) {
+    //         newNest[item.key][val.key] = val.values.length
+    //     }
+    // }
+    // newNest = convert(newNest);
+    // console.log(newNest);
+
+    // let resetNest = {}
+    // for (item of newNest) {
+    //     if(item.key.includes(", ")){
+    //         items = item.key.split(", ")
+    //         // for (i of items) {
+    //         //     if(Object.keys(resetNest).includes(i)){
+    //         //         for(val of item.values){
+    //         //             resetNest[i] = item.values
+    //         //         }
+    //         //     }
+    //         // }
+    //     }
+    // }
+
     for (group of nested_data){
         if (group.key != "" && group.key!= "Luther J-Term"){
             labels.push(group.key)
@@ -37,9 +67,41 @@ function testStackBar(result, attr){
     for(let i=1; i < 10; i++) {
         terms_colors.push(String(i))
     }
+
     var myColor = d3.scaleOrdinal().domain(terms_colors)
         .range(d3.schemeSet2)
+
     
+    for (l of labels) {
+        if (l.includes(', ')) {
+            sep = l.split(', ')
+            for (s of sep) {
+                for(let i =1; i < 10; i++) {
+                    prior_data[String(i)][labels.indexOf(s)] += prior_data[String(i)][labels.indexOf(l)]
+                }
+            }
+        }
+    }
+    let comma = [];
+    for (l of labels) {
+        if (l.includes(', ')) {
+            comma.push(labels.indexOf(l))
+        }
+    }
+    console.log(comma)
+    console.log(labels)
+    for (c of comma) {
+        labels[c]= " ";
+        console.log(labels)
+        for(let i =1; i < 10; i++) {
+            prior_data[String(i)][c] = " "
+        }
+    }
+    labels = labels.filter(item => item !== " ")
+    for(let i =1; i < 10; i++) {
+        prior_data[String(i)] = prior_data[String(i)].filter(item => item !== " ")
+    }
+
     let datasets = [];
     for (priorTerm in prior_data){
         let partial = {
@@ -49,6 +111,7 @@ function testStackBar(result, attr){
         }
         datasets.push(partial);
     }
+
     var barChartData = {
         labels: labels,
         datasets: datasets,
@@ -84,6 +147,10 @@ function testStackBar(result, attr){
             tooltips: {
                 mode: 'index',
                 intersect: false
+            },
+            hover: {
+               mode: 'index',
+               intersect: false     
             },
             responsive: true,
             scales: {

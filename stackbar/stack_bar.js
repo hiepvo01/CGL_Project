@@ -1,10 +1,3 @@
-function convert(obj) {
-    return Object.keys(obj).map(key => ({
-        key: key,
-        values: obj[key],
-    }));
-}
-
 function testStackBar(result, attr){
     var labels = []
     prior_data = {}
@@ -16,30 +9,6 @@ function testStackBar(result, attr){
         .key(function(d) { return d[attr]; })
         .key(function(d) { return d["Prior Terms"]; })
         .entries(students)
-
-    // let newNest = {}
-    // for (item of nested_data) {
-    //     newNest[item.key] = {}
-    //     for (val of item.values) {
-    //         newNest[item.key][val.key] = val.values.length
-    //     }
-    // }
-    // newNest = convert(newNest);
-    // console.log(newNest);
-
-    // let resetNest = {}
-    // for (item of newNest) {
-    //     if(item.key.includes(", ")){
-    //         items = item.key.split(", ")
-    //         // for (i of items) {
-    //         //     if(Object.keys(resetNest).includes(i)){
-    //         //         for(val of item.values){
-    //         //             resetNest[i] = item.values
-    //         //         }
-    //         //     }
-    //         // }
-    //     }
-    // }
 
     for (group of nested_data){
         if (group.key != "" && group.key!= "Luther J-Term"){

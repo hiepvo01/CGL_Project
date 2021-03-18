@@ -91,44 +91,33 @@ Chart.pluginService.register({
 function resetCanvas(){
   $('.container-fluid').remove();
   $('body').append('<div class="container-fluid"></div>')
-  for (let i=1; i<5; i+=2) {
-    $('.container-fluid').append(`
-    <div class="row">
-      <div class="col-12">
-        <div id="legend">
-            <div class="item male">Male</div>
-            <div class="item female">Female</div>
-        </div>
-        <canvas id="chart${i}"></canvas>
-      </div>
-      <div class="col-12">
-      <div id="legend">
-            <div class="item male">Male</div>
-            <div class="item female">Female</div>
-        </div>
-        <canvas id="chart${i+1}"></canvas>
-      </div>
-    </div>`)
-  }
+  let i = 1
+  $('.container-fluid').append(`
+  <div class="row">
+    <div class="col-4">
+      <canvas id="chart${i}" class="myChart" width="500" height="500"></canvas>
+    </div>
+    <div class="col-4">
+      <canvas id="chart${i+1}" class="myChart" width="500" height="500"></canvas>
+    </div>
+    <div class="col-4">
+      <canvas id="chart${i+2}" class="myChart" width="500" height="500"></canvas>
+    </div>
+  </div>`)
 }
 
 function changeTitle(title){
   var origin = document.querySelector("#title"); 
-  origin.innerHTML = `Nested Pie Chart for ${title} and Gender per Year`;
+  origin.innerHTML = `Number of Students per ${title} per Year`;
 }
 
 function testChartPie(students, year, attr, chartid) {
   
     students = students.filter(function(d){ return d.Academic_Year == year });
     var terms = d3.group(students, d => d[attr]);
-    
     terms_data = []
     terms_labels = []
     terms_colors = []
-    
-    genders_data = []
-    genders_labels = []
-    genders_colors = []
 
     var keyValues = []
     for (key of terms.keys()) {
@@ -143,38 +132,6 @@ function testChartPie(students, year, attr, chartid) {
       terms_data.push(val[1]);
     }
 
-    var genTerm = []
-
-    for (tkey of terms_labels) {
-        let term = students.filter(function(d){ return d[attr] == tkey });
-        let genders = d3.group(term, d => d.Gender);
-
-        var genderKeyValues = []
-        for (key of genders.keys()) {
-            genderKeyValues.push([ key, genders.get(key).length ])
-        }
-    
-        if (genders.size == 2) {
-            genTerm.push(tkey)
-            genTerm.push(tkey)
-        } else {
-            genTerm.push(tkey)
-        }
-        genderKeyValues.sort(function compare(kv1, kv2) {
-        return kv2[0].localeCompare(kv1[0])
-        })
-
-        for (val of genderKeyValues) {
-        genders_labels.push(val[0]);
-        if (val[0] == "Male") {
-            genders_colors.push('#00FFFF')
-        } else {
-            genders_colors.push("#FF6666")
-        }
-        genders_data.push(val[1]);
-        }
-    }
-    
     var myColor = d3.scaleOrdinal().domain(terms_labels)
     .range(d3.schemeSet2)
     for (val of keyValues) {
@@ -193,7 +150,7 @@ function testChartPie(students, year, attr, chartid) {
                 lineHeight: 25 // Default is 25 (in px), used for when text wraps
             }
         },
-          maintainAspectRatio: true,
+          maintainAspectRatio: false,
           responsive: true,
           legend: {
             display: true
@@ -207,94 +164,68 @@ function testChartPie(students, year, attr, chartid) {
                   borderRadius: 50,
                   borderWidth: 5,
                   color: 'white',
-                  anchor: function(context) {
-                    if (context.dataset.label == "Gender") {
-                        return 'end'
-                    } else {
-                        return 'end'
-                    }
-                },
+                  anchor:'end',
             },
         },
         legend: {
-            labels: {
-              generateLabels: function(config) {
-                let labels = [];
-                config.data.datasets.filter(function(ds, iDs) {return iDs ==0}).forEach((ds, iDs) => labels = labels.concat(ds.labels.map((l, iLabel) => ({
-                  datasetIndex: iDs,
-                  labelIndex: iLabel, 
-                  text: l,
-                  fillStyle: ds.backgroundColor[iLabel],
-                  hidden: chart ? chart.getDatasetMeta(iDs).data[iLabel].hidden : false,
-                  strokeStyle: '#fff'
-                }))));
-                return labels;
-              }
-            },
-            onClick: (event, legendItem) => {
-                let metaData = chart.getDatasetMeta(legendItem.datasetIndex).data;
-                metaData[legendItem.labelIndex].hidden = !metaData[legendItem.labelIndex].hidden;
-                console.log(metaData)
-                console.log(metaData[legendItem.labelIndex])
-                
-                let metaData1 = chart.getDatasetMeta(1).data;
-
-                gen = genTerm.reduce(function(a, e, i) {
-                    if (e === terms_labels[legendItem.labelIndex])
-                    a.push(i);
-                    return a;
-                }, []);
-                
-                for (idx of gen) {
-                    metaData1[idx].hidden = !metaData1[idx].hidden;
-                }
-
-                chart.update();
-              },
-              tooltips: {
-                callbacks: {
-                  label: (tooltipItem, data) => {
-                    let dataset = data.datasets[tooltipItem.datasetIndex];
-                    let index = tooltipItem.index;
-                    return dataset.labels[index] + ": " + dataset.data[index];
-                  }
-                }
-              },
-
+          display: false
         },
         },
         data: {
+          labels: terms_labels,
           datasets: [
             {
               data: terms_data,
-              backgroundColor: terms_colors,
-              label: attr,
-              labels: terms_labels
-            },
-            {
-              data: genders_data,
-              backgroundColor: genders_colors,
-              label: "Gender",
-              labels: genders_labels
+              backgroundColor: terms_colors
             }
           ],
-          labels: terms_labels.concat(genders_labels)
         }
       })
+      return chart
     }
 
 function draw(attr){
   resetCanvas();
-  d3.select('canvas').selectAll('*').remove();
 
   d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
-      testChartPie(result, "2015-16", attr, 'chart1');
-      testChartPie(result, "2016-17", attr, 'chart2');
+      resetCanvas();
+      let chart1 = testChartPie(result, "2015-16", attr, 'chart1');
+      let chart2 = testChartPie(result, "2016-17", attr, 'chart2');
+      let chart3 = testChartPie(result, "2017-18", attr, 'chart3');
       changeTitle(attr)
+      document.querySelector('.legend').innerHTML = chart1.generateLegend();
+    
+      var legendItems = document.querySelector('.legend').getElementsByTagName('li');
+      for (var i = 0; i < legendItems.length; i++) {
+        legendItems[i].addEventListener("click", legendClickCallback.bind(this,i), false);
+      }
+
+      
+      function legendClickCallback(legendItemIndex){
+        // console.log(legendItems[legendItemIndex].innerHTML)
+        let idx = legendItems[legendItemIndex].innerHTML.indexOf('/span>');
+        let length = legendItems[legendItemIndex].innerHTML.length;
+        // console.log(legendItems[legendItemIndex].innerHTML.indexOf('/span>'));
+        // console.log(legendItems[legendItemIndex].innerHTML[idx + 6])
+        // console.log(legendItems[legendItemIndex].innerHTML[length-1])
+        document.querySelectorAll('.myChart').forEach((chartItem,index)=>{
+          chart1.getDatasetMeta(0).data[legendItemIndex].hidden = !chart1.getDatasetMeta(0).data[legendItemIndex].hidden
+          chart2.getDatasetMeta(0).data[legendItemIndex].hidden = !chart2.getDatasetMeta(0).data[legendItemIndex].hidden
+          chart3.getDatasetMeta(0).data[legendItemIndex].hidden = !chart3.getDatasetMeta(0).data[legendItemIndex].hidden
+          chart1.update();chart2.update();chart3.update();
+        })  
+      }
   });
-  
-  d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
-      testChartPie(result, "2017-18", attr, 'chart3');
-      testChartPie(result, "2018-19", attr, 'chart4');
-  });
+
 }
+
+
+// d3.csv('http://127.0.0.1:5000/all_data.csv').then(function(result) {
+//     testChartPie(result, "2015-16", 'chart1');
+//     testChartPie(result, "2016-17", 'chart3');
+// });
+
+// d3.csv('http://127.0.0.1:5000/all_data.csv').then(function(result) {
+//     testChartBar(result, "2015-16", 'chart2');
+//     testChartBar(result, "2016-17", 'chart4');
+// });

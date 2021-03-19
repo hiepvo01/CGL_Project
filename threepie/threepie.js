@@ -108,7 +108,7 @@ function resetCanvas(){
 
 function changeTitle(title){
   var origin = document.querySelector("#title"); 
-  origin.innerHTML = `Number of Students per ${title} per Year`;
+  origin.innerHTML = `Number of Students per ${title}`;
 }
 
 three_pies_dict = {}

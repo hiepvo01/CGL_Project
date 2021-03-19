@@ -163,6 +163,7 @@ function testChartPie(attr, chartid, luther) {
       terms_labels.push(val[0]);
       terms_data.push(val[1]);
     }
+    let centers = ["Luther All", "Luther Study Away", "United States"];
 
     var myColor = d3.scaleOrdinal().domain(terms_labels)
     .range(d3.schemeSet2)
@@ -174,7 +175,7 @@ function testChartPie(attr, chartid, luther) {
         options: {
         elements: {
             center: {
-                text: attr,
+                text: centers[luther],
                 color: '#FF6384', // Default is #000000
                 fontStyle: 'Arial', // Default is Arial
                 sidePadding: 20, // Default is 20 (as a percentage)
@@ -234,12 +235,13 @@ function draw(attr){
 
       
       function legendClickCallback(legendItemIndex){
-        // console.log(legendItems[legendItemIndex].innerHTML)
         let idx = legendItems[legendItemIndex].innerHTML.indexOf('/span>');
         let length = legendItems[legendItemIndex].innerHTML.length;
-        // console.log(legendItems[legendItemIndex].innerHTML.indexOf('/span>'));
-        // console.log(legendItems[legendItemIndex].innerHTML[idx + 6])
-        // console.log(legendItems[legendItemIndex].innerHTML[length-1])
+        if(legendItems[legendItemIndex].innerHTML.indexOf('<del>') < 0){
+          legendItems[legendItemIndex].innerHTML = legendItems[legendItemIndex].innerHTML.substr(0, idx+6) + '<del>' + legendItems[legendItemIndex].innerHTML.substr(idx+6, length) + '</del>'
+        } else {
+          legendItems[legendItemIndex].innerHTML = legendItems[legendItemIndex].innerHTML.substr(0, idx+6)+legendItems[legendItemIndex].innerText
+        }
         document.querySelectorAll('.myChart').forEach((chartItem,index)=>{
           chart1.getDatasetMeta(0).data[legendItemIndex].hidden = !chart1.getDatasetMeta(0).data[legendItemIndex].hidden
           chart2.getDatasetMeta(0).data[legendItemIndex].hidden = !chart2.getDatasetMeta(0).data[legendItemIndex].hidden

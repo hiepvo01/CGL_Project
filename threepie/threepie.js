@@ -111,20 +111,52 @@ function changeTitle(title){
   origin.innerHTML = `Number of Students per ${title} per Year`;
 }
 
-function testChartPie(students, year, attr, chartid) {
-  
-    students = students.filter(function(d){ return d.Academic_Year == year });
-    var terms = d3.group(students, d => d[attr]);
+three_pies_dict = {}
+three_pies_dict["study"] = {
+    "labels": ['STEM Fields','Business/Management','Social Sciences','Languages/International Studies','Fine/Applied Arts',
+    'Communications', 'Humanities', 'Education','Other'],
+    0: [32.4,13.6,18.5, 6.9, 11.7, 3.4, 8.0,5.2,.2],
+    1: [825, 244, 487, 254, 245, 82, 214, 102, 2],
+    2: [25.9, 20.8, 17.1, 7.2, 6.7, 5.6, 3.6, 3.3, 8.5, 1.8]
+}
+three_pies_dict["gender"] = {
+    "labels": ['Male', 'Female'],
+    0: [44.3, 55.7],
+    1: [642, 1127],
+    2: [33, 67]
+}
+three_pies_dict["race"] = {
+    "labels": ['Hispanic/Latinx','Asian/Hawaiian/Pacific Islander','Black/African-American','Multiracial',
+    'American Indian/Alaskan Native'],
+    0: [ 4.6, 1.7, 2, 2.2, .3],
+    1: [ 41, 28, 18, 31, 6],
+    2: [10.3, 8.4, 6.1, 4.3, 1.8]
+}
+three_pies_dict["FGEN"] = {
+    "labels": ['Not FGEN', 'FGEN'],
+    0: [ 2337+2169+2053+2005-(491+465+467+451), 491+465+467+451],
+    1: [ 1769-235,235],
+}
+three_pies_dict["geographic"] = {
+    "labels": ['US', 'International'],
+    
+    0: [92.7, 7.3],
+    1: [1717, 52],
+}
+
+function testChartPie(attr, chartid, luther) {
+
+  var terms = three_pies_dict[attr];
     terms_data = []
     terms_labels = []
     terms_colors = []
 
     var keyValues = []
-    for (key of terms.keys()) {
-      keyValues.push([ key, terms.get(key).length ])
+    for (key in terms['labels']) {
+      keyValues.push([ terms['labels'][key], terms[luther][key] ])
     }
     keyValues.sort(function compare(kv1, kv2) {
-      return kv2[0].localeCompare(kv1[0])
+      return kv1[0].localeCompare(kv2[0])
     })
 
     for (val of keyValues) {
@@ -142,7 +174,7 @@ function testChartPie(students, year, attr, chartid) {
         options: {
         elements: {
             center: {
-                text: year,
+                text: attr,
                 color: '#FF6384', // Default is #000000
                 fontStyle: 'Arial', // Default is Arial
                 sidePadding: 20, // Default is 20 (as a percentage)
@@ -189,9 +221,9 @@ function draw(attr){
 
   d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
       resetCanvas();
-      let chart1 = testChartPie(result, "2015-16", attr, 'chart1');
-      let chart2 = testChartPie(result, "2016-17", attr, 'chart2');
-      let chart3 = testChartPie(result, "2017-18", attr, 'chart3');
+      let chart1 = testChartPie(attr, 'chart1', 0);
+      let chart2 = testChartPie(attr, 'chart2', 1);
+      let chart3 = testChartPie(attr, 'chart3', 2);
       changeTitle(attr)
       document.querySelector('.legend').innerHTML = chart1.generateLegend();
     

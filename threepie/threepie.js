@@ -110,38 +110,43 @@ function changeTitle(title){
   var origin = document.querySelector("#title"); 
   origin.innerHTML = `Number of Students per ${title}`;
 }
-
+let studysum = 825 + 244 + 487 + 254 + 245 + 82 + 214 + 102 + 2
+function round(n, sum) {
+  num = (n/sum)*100
+  return Math.round(num*10)/10
+}
 three_pies_dict = {}
 three_pies_dict["study"] = {
     "labels": ['STEM Fields','Business/Management','Social Sciences','Languages/International Studies','Fine/Applied Arts',
     'Communications', 'Humanities', 'Education','Other'],
     0: [32.4,13.6,18.5, 6.9, 11.7, 3.4, 8.0,5.2,.2],
-    1: [825, 244, 487, 254, 245, 82, 214, 102, 2],
+    1: [round(825,studysum), round(244,studysum), round(487,studysum), round(254,studysum), round(245,studysum), round(82,studysum), round(214,studysum), round(102,studysum)
+      , round(2,studysum)],
     2: [25.9, 20.8, 17.1, 7.2, 6.7, 5.6, 3.6, 3.3, 8.5, 1.8]
 }
 three_pies_dict["gender"] = {
     "labels": ['Male', 'Female'],
     0: [44.3, 55.7],
-    1: [642, 1127],
+    1: [36.3, 63.7],
     2: [33, 67]
 }
 three_pies_dict["race"] = {
-    "labels": ['Hispanic/Latinx','Asian/Hawaiian/Pacific Islander','Black/African-American','Multiracial',
+    "labels": ['White', 'Hispanic/Latinx','Asian/Hawaiian/Pacific Islander','Black/African-American','Multiracial',
     'American Indian/Alaskan Native'],
-    0: [ 4.6, 1.7, 2, 2.2, .3],
-    1: [ 41, 28, 18, 31, 6],
-    2: [10.3, 8.4, 6.1, 4.3, 1.8]
+    0: [89.2, 4.6, 1.7, 2, 2.2, .3],
+    1: [92.1, 2.6, 1.8, 1.1, 2.0, 0.4],
+    2: [69.5, 10.3, 8.4, 6.1, 4.3, 1.8]
 }
 three_pies_dict["FGEN"] = {
     "labels": ['Not FGEN', 'FGEN'],
-    0: [ 2337+2169+2053+2005-(491+465+467+451), 491+465+467+451],
-    1: [ 1769-235,235],
+    0: [ round(2337+2169+2053+2005-(491+465+467+451), 2337+2169+2053+2005), round(491+465+467+451, 2337+2169+2053+2005)],
+    1: [ round(1769-235, 1769),round(235, 1769)],
 }
 three_pies_dict["geographic"] = {
     "labels": ['US', 'International'],
     
     0: [92.7, 7.3],
-    1: [1717, 52],
+    1: [ round(1717, 1717+52), round(52, 1717+52)],
 }
 
 function testChartPie(attr, chartid, luther) {
@@ -166,7 +171,8 @@ function testChartPie(attr, chartid, luther) {
     let centers = ["Luther All", "Luther Study Away", "United States"];
 
     var myColor = d3.scaleOrdinal().domain(terms_labels)
-    .range(d3.schemeSet2)
+
+    .range(d3.schemeCategory10)
     for (val of keyValues) {
       terms_colors.push(myColor(val[0]))
     }
@@ -190,6 +196,9 @@ function testChartPie(attr, chartid, luther) {
           },
           plugins: {
             datalabels: {
+                formatter: (value, ctx) => {
+                  return value + "%"
+                },
                 backgroundColor: function(context) {
                     return context.dataset.backgroundColor;
                   },
@@ -197,7 +206,7 @@ function testChartPie(attr, chartid, luther) {
                   borderRadius: 50,
                   borderWidth: 5,
                   color: 'white',
-                  anchor:'end',
+                  anchor:'center',
             },
         },
         legend: {

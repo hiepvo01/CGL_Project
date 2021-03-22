@@ -10,7 +10,6 @@ function testStackBar(result, attr){
         .sortKeys(d3.ascending)
         .key(function(d) { return d["Prior Terms"]; })
         .entries(students)
-
     console.log(nested_data)
 
     for (group of nested_data){
@@ -73,13 +72,11 @@ function testStackBar(result, attr){
             prior_data[String(i)][c] = " "
         }
     }
+
     labels = labels.filter(item => item !== " ")
     for(let i =1; i < 10; i++) {
         prior_data[String(i)] = prior_data[String(i)].filter(item => item !== " ")
     }
-
-    console.log(prior_data)
-    console.log(labels)
 
     let datasets = [];
     for (priorTerm in prior_data){

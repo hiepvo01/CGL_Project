@@ -1,4 +1,4 @@
-function testStackBar(result, attr){
+function testStackBar(result, attr, j=false){
     var labels = []
     prior_data = {}
     for(let i=1; i < 10; i++) {
@@ -11,36 +11,73 @@ function testStackBar(result, attr){
         .key(function(d) { return d["Prior Terms"]; })
         .entries(students)
     console.log(nested_data)
+    
+    if (j) {
+        for (group of nested_data){
+            // if (group.key != "" && group.key!= "Luther J-Term"){
+            if (group.key != "" && group.key== "Luther J-Term"){
+    
+                try {
+                    musics = group.key.split(", ")
+                    if (musics.length == 2 && musics.pop()==""){
+                        group.key = musics[0]
+                    }
+                } catch (e) {
+                }
+                labels.push(group.key)
+                let notcheck = [];
+                for(let i=1; i < 10; i++) {
+                    notcheck.push(String(i))
+                }
+                for (val of group.values) {
+                    try{
+                        prior_data[val.key].push(val.values.length)
+                        notcheck = notcheck.filter(function(item) {
+                            return item !== val.key
+                        })
+                    } catch(err){
+                        continue
+                    }
+                }
+                for (remain of notcheck) {
+                    prior_data[remain].push(0)
+                }
+            }
+        };
+    } else {
+        for (group of nested_data){
+            // if (group.key != "" && group.key!= "Luther J-Term"){
+            if (group.key != "" && group.key!= "Luther J-Term"){
+    
+                try {
+                    musics = group.key.split(", ")
+                    if (musics.length == 2 && musics.pop()==""){
+                        group.key = musics[0]
+                    }
+                } catch (e) {
+                }
+                labels.push(group.key)
+                let notcheck = [];
+                for(let i=1; i < 10; i++) {
+                    notcheck.push(String(i))
+                }
+                for (val of group.values) {
+                    try{
+                        prior_data[val.key].push(val.values.length)
+                        notcheck = notcheck.filter(function(item) {
+                            return item !== val.key
+                        })
+                    } catch(err){
+                        continue
+                    }
+                }
+                for (remain of notcheck) {
+                    prior_data[remain].push(0)
+                }
+            }
+        };
+    }
 
-    for (group of nested_data){
-        if (group.key != "" && group.key!= "Luther J-Term"){
-            try {
-                musics = group.key.split(", ")
-                if (musics.length == 2 && musics.pop()==""){
-                    group.key = musics[0]
-                }
-            } catch (e) {
-            }
-            labels.push(group.key)
-            let notcheck = [];
-            for(let i=1; i < 10; i++) {
-                notcheck.push(String(i))
-            }
-            for (val of group.values) {
-                try{
-                    prior_data[val.key].push(val.values.length)
-                    notcheck = notcheck.filter(function(item) {
-                        return item !== val.key
-                    })
-                } catch(err){
-                    continue
-                }
-            }
-            for (remain of notcheck) {
-                prior_data[remain].push(0)
-            }
-        }
-    };
     let terms_colors = [];
     for(let i=1; i < 10; i++) {
         terms_colors.push(String(i))
@@ -140,9 +177,13 @@ function testStackBar(result, attr){
         }
     });
 }
-function changeTitle(title){
+function changeTitle(title, j){
     var origin = document.querySelector("#title"); 
-    origin.innerHTML = `${title} Stacked Bar Chart of Prior Terms `;
+    if (j) {
+        origin.innerHTML = `# by Prior Term and Luther J-Term `;
+    } else {
+        origin.innerHTML = `# by Prior Term and ${title} `;
+    }
 }
 
 function resetCanvas(){
@@ -151,12 +192,12 @@ function resetCanvas(){
   }
   
 
-function draw(attr){
+function draw(attr, j=false){
     resetCanvas();
     d3.select('canvas').selectAll('*').remove();
   
     d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
-        testStackBar(result, attr);
-        changeTitle(attr)
+        testStackBar(result, attr, j);
+        changeTitle(attr, j)
     });
   }

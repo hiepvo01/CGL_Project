@@ -108,7 +108,14 @@ function resetCanvas(){
 
 function changeTitle(title){
   var origin = document.querySelector("#title"); 
-  origin.innerHTML = `Number of Students per ${title}`;
+  if (title == "study") {
+    title = "Field of Study"
+  } else if (title == "gender") {
+    title = "Sex"
+  } else if (title == "race") {
+    title = "Race/ Ethnicity"
+  }
+  origin.innerHTML = `% by ${title}`;
 }
 let studysum = 825 + 244 + 487 + 254 + 245 + 82 + 214 + 102 + 2
 function round(n, sum) {
@@ -168,7 +175,7 @@ function testChartPie(attr, chartid, luther) {
       terms_labels.push(val[0]);
       terms_data.push(val[1]);
     }
-    let centers = ["Luther All", "Luther Study Away", "United States"];
+    let centers = ["Luther All", "Luther Study Away", "U.S. Study Abroad"];
 
     var myColor = d3.scaleOrdinal().domain(terms_labels)
 

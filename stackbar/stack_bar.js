@@ -179,6 +179,9 @@ function testStackBar(result, attr, j=false){
 }
 function changeTitle(title, j){
     var origin = document.querySelector("#title"); 
+    if(title == "Music") {
+        title = "Ensembles"
+    }
     if (j) {
         origin.innerHTML = `# by Prior Term and Luther J-Term `;
     } else {

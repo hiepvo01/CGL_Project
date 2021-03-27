@@ -238,39 +238,60 @@ function draw(attr){
 
   d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
       resetCanvas();
-      let chart1 = testChartPie(attr, 'chart1', 0);
-      let chart2 = testChartPie(attr, 'chart2', 1);
       try {
         let chart3 = testChartPie(attr, 'chart3', 2);
-      } catch (e){
-
-      }
-      changeTitle(attr)
-      document.querySelector('.legend').innerHTML = chart1.generateLegend();
-    
-      var legendItems = document.querySelector('.legend').getElementsByTagName('li');
-      for (var i = 0; i < legendItems.length; i++) {
-        legendItems[i].addEventListener("click", legendClickCallback.bind(this,i), false);
-      }
-
+        let chart1 = testChartPie(attr, 'chart1', 0);
+        let chart2 = testChartPie(attr, 'chart2', 1);
+        changeTitle(attr)
+        document.querySelector('.legend').innerHTML = chart1.generateLegend();
       
-      function legendClickCallback(legendItemIndex){
-        let idx = legendItems[legendItemIndex].innerHTML.indexOf('/span>');
-        let length = legendItems[legendItemIndex].innerHTML.length;
-        if(legendItems[legendItemIndex].innerHTML.indexOf('<del>') < 0){
-          legendItems[legendItemIndex].innerHTML = legendItems[legendItemIndex].innerHTML.substr(0, idx+6) + '<del>' + legendItems[legendItemIndex].innerHTML.substr(idx+6, length) + '</del>'
-        } else {
-          legendItems[legendItemIndex].innerHTML = legendItems[legendItemIndex].innerHTML.substr(0, idx+6)+legendItems[legendItemIndex].innerText
+        var legendItems = document.querySelector('.legend').getElementsByTagName('li');
+        for (var i = 0; i < legendItems.length; i++) {
+          legendItems[i].addEventListener("click", legendClickCallback.bind(this,i), false);
         }
-        document.querySelectorAll('.myChart').forEach((chartItem,index)=>{
-          chart1.getDatasetMeta(0).data[legendItemIndex].hidden = !chart1.getDatasetMeta(0).data[legendItemIndex].hidden
-          chart2.getDatasetMeta(0).data[legendItemIndex].hidden = !chart2.getDatasetMeta(0).data[legendItemIndex].hidden
-          chart1.update();chart2.update();
-          try{
+
+        
+        function legendClickCallback(legendItemIndex){
+          let idx = legendItems[legendItemIndex].innerHTML.indexOf('/span>');
+          let length = legendItems[legendItemIndex].innerHTML.length;
+          if(legendItems[legendItemIndex].innerHTML.indexOf('<del>') < 0){
+            legendItems[legendItemIndex].innerHTML = legendItems[legendItemIndex].innerHTML.substr(0, idx+6) + '<del>' + legendItems[legendItemIndex].innerHTML.substr(idx+6, length) + '</del>'
+          } else {
+            legendItems[legendItemIndex].innerHTML = legendItems[legendItemIndex].innerHTML.substr(0, idx+6)+legendItems[legendItemIndex].innerText
+          }
+          document.querySelectorAll('.myChart').forEach((chartItem,index)=>{
+            chart1.getDatasetMeta(0).data[legendItemIndex].hidden = !chart1.getDatasetMeta(0).data[legendItemIndex].hidden
+            chart2.getDatasetMeta(0).data[legendItemIndex].hidden = !chart2.getDatasetMeta(0).data[legendItemIndex].hidden
             chart3.getDatasetMeta(0).data[legendItemIndex].hidden = !chart3.getDatasetMeta(0).data[legendItemIndex].hidden
-            chart3.update();
-          } catch (e){}
-        })  
+            chart1.update();chart2.update();chart3.update();
+          })  
+        }
+      } catch (e){
+        let chart1 = testChartPie(attr, 'chart1', 0);
+        let chart2 = testChartPie(attr, 'chart2', 1);
+        changeTitle(attr)
+        document.querySelector('.legend').innerHTML = chart1.generateLegend();
+      
+        var legendItems = document.querySelector('.legend').getElementsByTagName('li');
+        for (var i = 0; i < legendItems.length; i++) {
+          legendItems[i].addEventListener("click", legendClickCallback.bind(this,i), false);
+        }
+
+        
+        function legendClickCallback(legendItemIndex){
+          let idx = legendItems[legendItemIndex].innerHTML.indexOf('/span>');
+          let length = legendItems[legendItemIndex].innerHTML.length;
+          if(legendItems[legendItemIndex].innerHTML.indexOf('<del>') < 0){
+            legendItems[legendItemIndex].innerHTML = legendItems[legendItemIndex].innerHTML.substr(0, idx+6) + '<del>' + legendItems[legendItemIndex].innerHTML.substr(idx+6, length) + '</del>'
+          } else {
+            legendItems[legendItemIndex].innerHTML = legendItems[legendItemIndex].innerHTML.substr(0, idx+6)+legendItems[legendItemIndex].innerText
+          }
+          document.querySelectorAll('.myChart').forEach((chartItem,index)=>{
+            chart1.getDatasetMeta(0).data[legendItemIndex].hidden = !chart1.getDatasetMeta(0).data[legendItemIndex].hidden
+            chart2.getDatasetMeta(0).data[legendItemIndex].hidden = !chart2.getDatasetMeta(0).data[legendItemIndex].hidden
+            chart1.update();chart2.update();
+          })  
+        }
       }
   });
 

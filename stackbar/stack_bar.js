@@ -1,16 +1,28 @@
-function testStackBar(result, attr, j=false){
+function testStackBar(result, j=false){
+    attr = document.querySelector("#musicSport").innerHTML
+    term = document.querySelector("#term").innerHTML
+
+    let students = result.filter(function(d){ return d.Academic_Year != "2014-15" });
+    
     var labels = []
     prior_data = {}
-    for(let i=1; i < 10; i++) {
-        prior_data[String(i)] = []
+    
+    var nested_labels = d3.nest()
+        .key(function(d) { return d[term]; })
+        .sortKeys(d3.ascending)
+        .entries(students)
+
+    for(let i of nested_labels) {
+        if(i.key != "" && i.key != "17" && i.key != "11"){
+            prior_data[i.key] = []
+        }
     }
-    let students = result.filter(function(d){ return d.Academic_Year != "2014-15" });
+
     var nested_data = d3.nest()
         .key(function(d) { return d[attr]; })
         .sortKeys(d3.ascending)
-        .key(function(d) { return d["Prior Terms"]; })
+        .key(function(d) { return d[term]; })
         .entries(students)
-    console.log(nested_data)
     
     if (j) {
         for (group of nested_data){
@@ -26,8 +38,10 @@ function testStackBar(result, attr, j=false){
                 }
                 labels.push(group.key)
                 let notcheck = [];
-                for(let i=1; i < 10; i++) {
-                    notcheck.push(String(i))
+                for(let i of nested_labels) {
+                    if(i.key != "" && i.key != "17" && i.key != "11"){
+                        notcheck.push(i.key)
+                    }
                 }
                 for (val of group.values) {
                     try{
@@ -58,8 +72,10 @@ function testStackBar(result, attr, j=false){
                 }
                 labels.push(group.key)
                 let notcheck = [];
-                for(let i=1; i < 10; i++) {
-                    notcheck.push(String(i))
+                for(let i of nested_labels) {
+                    if(i.key != "" && i.key != "17" && i.key != "11"){
+                        notcheck.push(i.key)
+                    }
                 }
                 for (val of group.values) {
                     try{
@@ -91,8 +107,10 @@ function testStackBar(result, attr, j=false){
         if (l.includes(', ')) {
             sep = l.split(', ')
             for (s of sep) {
-                for(let i =1; i < 10; i++) {
-                    prior_data[String(i)][labels.indexOf(s)] += prior_data[String(i)][labels.indexOf(l)]
+                for(let i of nested_labels) {
+                    if(i.key != "" && i.key != "17" && i.key != "11"){
+                        prior_data[i.key][labels.indexOf(s)] += prior_data[i.key][labels.indexOf(l)]
+                    }
                 }
             }
         }
@@ -105,14 +123,18 @@ function testStackBar(result, attr, j=false){
     }
     for (c of comma) {
         labels[c]= " ";
-        for(let i =1; i < 10; i++) {
-            prior_data[String(i)][c] = " "
+        for(let i of nested_labels) {
+            if(i.key != "" && i.key != "17" && i.key != "11"){
+                prior_data[i.key][c] = " "
+            }
         }
     }
 
     labels = labels.filter(item => item !== " ")
-    for(let i =1; i < 10; i++) {
-        prior_data[String(i)] = prior_data[String(i)].filter(item => item !== " ")
+    for(let i of nested_labels) {
+        if(i.key != "" && i.key != "17" && i.key != "11"){
+            prior_data[i.key] = prior_data[i.key].filter(item => item !== " ")
+        }
     }
 
     let datasets = [];
@@ -177,7 +199,9 @@ function testStackBar(result, attr, j=false){
         }
     });
 }
-function changeTitle(title, j){
+function changeTitle(title, id, j){
+    let list = document.querySelector(id)
+    list.innerHTML = title;
     var origin = document.querySelector("#title"); 
     if(title == "Music") {
         title = "Ensembles"
@@ -193,14 +217,12 @@ function resetCanvas(){
     $('#canvas').remove();
     $('.stackbar').append('<canvas id="canvas"></canvas>')
   }
-  
 
-function draw(attr, j=false){
+function draw(j=false){
     resetCanvas();
     d3.select('canvas').selectAll('*').remove();
   
     d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
-        testStackBar(result, attr, j);
-        changeTitle(attr, j)
+        testStackBar(result, j);
     });
   }

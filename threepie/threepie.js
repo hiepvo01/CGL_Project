@@ -240,7 +240,11 @@ function draw(attr){
       resetCanvas();
       let chart1 = testChartPie(attr, 'chart1', 0);
       let chart2 = testChartPie(attr, 'chart2', 1);
-      let chart3 = testChartPie(attr, 'chart3', 2);
+      try {
+        let chart3 = testChartPie(attr, 'chart3', 2);
+      } catch (e){
+
+      }
       changeTitle(attr)
       document.querySelector('.legend').innerHTML = chart1.generateLegend();
     
@@ -261,8 +265,11 @@ function draw(attr){
         document.querySelectorAll('.myChart').forEach((chartItem,index)=>{
           chart1.getDatasetMeta(0).data[legendItemIndex].hidden = !chart1.getDatasetMeta(0).data[legendItemIndex].hidden
           chart2.getDatasetMeta(0).data[legendItemIndex].hidden = !chart2.getDatasetMeta(0).data[legendItemIndex].hidden
-          chart3.getDatasetMeta(0).data[legendItemIndex].hidden = !chart3.getDatasetMeta(0).data[legendItemIndex].hidden
-          chart1.update();chart2.update();chart3.update();
+          chart1.update();chart2.update();
+          try{
+            chart3.getDatasetMeta(0).data[legendItemIndex].hidden = !chart3.getDatasetMeta(0).data[legendItemIndex].hidden
+            chart3.update();
+          } catch (e){}
         })  
       }
   });

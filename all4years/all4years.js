@@ -103,6 +103,10 @@ function resetCanvas(){
   <div class="row">
     <div class="col-1"></div>
     <div class="col-10">
+        <div id="legend">
+            <div class="item male">Male</div>
+            <div class="item female">Female</div>
+        </div>
       <canvas id="chart3"></canvas>
     </div>
   <div class="col-1"></div>

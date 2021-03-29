@@ -35,6 +35,10 @@ body {
   padding: 0 10px 0 4px;
 }
 
+a {
+  text-decoration: none
+}
+
 #legend .item.male {
   border-left: 12px solid #00FFFF;
 }

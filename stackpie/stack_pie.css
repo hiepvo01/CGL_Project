@@ -21,6 +21,10 @@ body {
     letter-spacing: -0.01em;
     color: #333;
   }
+
+  a{
+    text-decoration: none;
+  }
   
   #legend {
     display: flex;

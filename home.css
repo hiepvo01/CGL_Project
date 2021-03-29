@@ -1,4 +1,9 @@
 /* stylelint-disable selector-list-comma-newline-after */
+body {
+  font-family: 'Roboto';
+  color: #333;
+  background-color: #F9F7EB;
+}
 
 .blog-header {
     line-height: 1;

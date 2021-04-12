@@ -438,7 +438,7 @@ function draw(attr){
   d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
       testChartPie(result, attr, 'chart1');
       testChartBar(result, attr, 'chart2');
-      stackPie(result, attr, 'chart3');
+      // stackPie(result, attr, 'chart3');
       changeTitle(attr)
   });
 }

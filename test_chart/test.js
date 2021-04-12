@@ -106,6 +106,9 @@ function resetCanvas(){
 
 function changeTitle(title){
   var origin = document.querySelector("#title"); 
+  if (title=="Gender"){
+    title="Sex"
+  }
   origin.innerHTML = `Number of Students per ${title} per Year`;
 }
 

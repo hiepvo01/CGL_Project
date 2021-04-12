@@ -114,7 +114,7 @@ function resetCanvas(){
 
 function changeTitle(title){
   var origin = document.querySelector("#title"); 
-  origin.innerHTML = `Nested Pie Chart for ${title} and Gender per Year`;
+  origin.innerHTML = `Nested Pie Chart for ${title} and Sex per Year`;
 }
 
 function testChartPie(students, year, attr, chartid) {

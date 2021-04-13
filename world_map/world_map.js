@@ -90,32 +90,30 @@ Chart.pluginService.register({
 
 function resetCanvas(){
   $('.container-fluid').remove();
+  $('.world').remove();
+  $('body').append('<div class="table"></div>')
   $('body').append('<div class="container-fluid"></div>')
   let i = 1
   $('.container-fluid').append(`
   <div class="row">
-    <div class="col-4">
+    <div class="col-6">
       <canvas id="chart${i}" class="myChart" width="500" height="500"></canvas>
     </div>
-    <div class="col-4">
+    <div class="col-6">
       <canvas id="chart${i+1}" class="myChart" width="500" height="500"></canvas>
     </div>
-    <div class="col-4">
+    <div class="col-6">
       <canvas id="chart${i+2}" class="myChart" width="500" height="500"></canvas>
+    </div>
+    <div class="col-6">
+      <canvas id="chart${i+3}" class="myChart" width="500" height="500"></canvas>
     </div>
   </div>`)
 }
 
 function changeTitle(title){
   var origin = document.querySelector("#title"); 
-  if (title == "study") {
-    title = "Field of Study"
-  } else if (title == "gender") {
-    title = "Sex"
-  } else if (title == "race") {
-    title = "Race/ Ethnicity"
-  }
-  origin.innerHTML = `% by ${title}`;
+  origin.innerHTML = `${title}`;
 }
 let studysum = 825 + 244 + 487 + 254 + 245 + 82 + 214 + 102 + 2
 function round(n, sum) {
@@ -123,49 +121,12 @@ function round(n, sum) {
   return Math.round(num*10)/10
 }
 three_pies_dict = {}
-three_pies_dict["Study"] = {
-    "labels": ['STEM Fields','Business/Management','Social Sciences','Languages/International Studies','Fine/Applied Arts',
-    'Communications', 'Humanities', 'Education','Other'],
-    0: [32.4,13.6,18.5, 6.9, 11.7, 3.4, 8.0,5.2,.2],
-    1: [round(825,studysum), round(244,studysum), round(487,studysum), round(254,studysum), round(245,studysum), round(82,studysum), round(214,studysum), round(102,studysum)
-      , round(2,studysum)],
-    2: [25.9, 20.8, 17.1, 7.2, 6.7, 5.6, 3.6, 3.3, 8.5, 1.8]
-}
-three_pies_dict["Sex"] = {
-    "labels": ['Male', 'Female'],
-    0: [44.3, 55.7],
-    1: [36.3, 63.7],
-    2: [33, 67]
-}
-three_pies_dict["Race"] = {
-    "labels": ['White', 'Hispanic/Latinx','Asian/Hawaiian/Pacific Islander','Black/African-American','Multiracial',
-    'American Indian/Alaskan Native'],
-    0: [89.2, 4.6, 1.7, 2, 2.2, .3],
-    1: [92.1, 2.6, 1.8, 1.1, 2.0, 0.4],
-    2: [69.5, 10.3, 8.4, 6.1, 4.3, 1.8]
-}
-three_pies_dict["FGEN"] = {
-    "labels": ['Not FGEN', 'FGEN'],
-    0: [ round(2337+2169+2053+2005-(491+465+467+451), 2337+2169+2053+2005), round(491+465+467+451, 2337+2169+2053+2005)],
-    1: [ round(1769-235, 1769),round(235, 1769)],
-}
-three_pies_dict["Geographic"] = {
-    "labels": ['US', 'International'],
-    
-    0: [92.7, 7.3],
-    1: [ round(1717, 1717+52), round(52, 1717+52)],
-}
-three_pies_dict["Sport"] = {
-  "labels": ['Not Sport', 'Sport'],
-  
-  0: [81.4, 18.6],
-  1: [76.8, 23.2],
-}
-three_pies_dict["Music"] = {
-  "labels": ['Not Music', 'Music'],
-  
-  0: [80.8, 19.2],
-  1: [56.2, 43.8],
+three_pies_dict["Total Enrolled"] = {
+    "labels": ['Total Enrolled','Study Away'],
+    0: [80.1,19.9],
+    1: [80.4, 19.6],
+    2: [78.6, 21.4],
+    3: [76.1, 23.9]
 }
 
 function testChartPie(attr, chartid, luther) {
@@ -187,7 +148,7 @@ function testChartPie(attr, chartid, luther) {
       terms_labels.push(val[0]);
       terms_data.push(val[1]);
     }
-    let centers = ["Luther All", "Luther Study Away", "U.S. Study Abroad"];
+    let centers = ["2015-16", "2016-17", "2017-18", "2018-19"];
 
     var myColor = d3.scaleOrdinal().domain(terms_labels)
 
@@ -245,12 +206,26 @@ function testChartPie(attr, chartid, luther) {
       return chart
     }
 
+function resetWorld(){
+  $('.container-fluid').remove();
+  $('.table').remove();
+  $('.world').remove();
+  $('body').append('<div class="world"></div>')
+}
+
+function world_map(){
+  resetWorld();
+  world = document.querySelector(".world");
+  $('.world').append('<div class="row"><iframe src="world.html" width:"500" title="world_map"></div>')
+}
+
 function draw(attr){
   resetCanvas();
 
   d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
       resetCanvas();
       try {
+        let chart4 = testChartPie(attr, 'chart4', 3);
         let chart3 = testChartPie(attr, 'chart3', 2);
         let chart1 = testChartPie(attr, 'chart1', 0);
         let chart2 = testChartPie(attr, 'chart2', 1);
@@ -271,12 +246,14 @@ function draw(attr){
           } else {
             legendItems[legendItemIndex].innerHTML = legendItems[legendItemIndex].innerHTML.substr(0, idx+6)+legendItems[legendItemIndex].innerText
           }
-          document.querySelectorAll('.myChart').forEach((chartItem,index)=>{
-            chart1.getDatasetMeta(0).data[legendItemIndex].hidden = !chart1.getDatasetMeta(0).data[legendItemIndex].hidden
-            chart2.getDatasetMeta(0).data[legendItemIndex].hidden = !chart2.getDatasetMeta(0).data[legendItemIndex].hidden
-            chart3.getDatasetMeta(0).data[legendItemIndex].hidden = !chart3.getDatasetMeta(0).data[legendItemIndex].hidden
-            chart1.update();chart2.update();chart3.update();
-          })  
+
+        chart1.getDatasetMeta(0).data[legendItemIndex].hidden = !chart1.getDatasetMeta(0).data[legendItemIndex].hidden
+        console.log(chart1.getDatasetMeta(0).data[legendItemIndex].hidden)
+        chart2.getDatasetMeta(0).data[legendItemIndex].hidden = !chart2.getDatasetMeta(0).data[legendItemIndex].hidden
+        chart3.getDatasetMeta(0).data[legendItemIndex].hidden = !chart3.getDatasetMeta(0).data[legendItemIndex].hidden
+        chart4.getDatasetMeta(0).data[legendItemIndex].hidden = !chart4.getDatasetMeta(0).data[legendItemIndex].hidden
+        chart1.update();chart2.update();chart3.update();chart4.update();
+
         }
       } catch (e){
         let chart1 = testChartPie(attr, 'chart1', 0);

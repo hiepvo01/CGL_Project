@@ -55,11 +55,13 @@
             </a>
           
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <li><a class="dropdown-item" onclick="draw('study')">Majors</a></li>
-              <li><a class="dropdown-item" onclick="draw('gender')">Sex</a></li>
-              <li><a class="dropdown-item" onclick="draw('race')">Race</a></li>
+              <li><a class="dropdown-item" onclick="draw('Study')">Majors</a></li>
+              <li><a class="dropdown-item" onclick="draw('Sex')">Sex</a></li>
+              <li><a class="dropdown-item" onclick="draw('Race')">Race</a></li>
               <li><a class="dropdown-item" onclick="draw('FGEN')">FGEN</a></li>
-              <li><a class="dropdown-item" onclick="draw('geographic')">Geographic</a></li>
+              <li><a class="dropdown-item" onclick="draw('Geographic')">Geographic</a></li>
+              <li><a class="dropdown-item" onclick="draw('Sport')">Sport</a></li>
+              <li><a class="dropdown-item" onclick="draw('Music')">Music</a></li>
             </ul>
           </div>
           <div class="table">
@@ -68,14 +70,17 @@
           </div>
           <div class="container-fluid">
               <div class="row">
-                <div class="col-4">
+                <div class="col-6">
                   <canvas id="chart1" class="myChart"></canvas>
                 </div>
-                <div class="col-4">
+                <div class="col-6">
                   <canvas id="chart2" class="myChart"></canvas>
                 </div>
-                <div class="col-4" class="myChart">
+                <div class="col-6" class="myChart">
                   <canvas id="chart3"></canvas>
+                </div>
+                <div class="col-6" class="myChart">
+                  <canvas id="chart4"></canvas>
                 </div>
               </div>
           </div>

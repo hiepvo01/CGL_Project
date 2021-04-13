@@ -295,7 +295,7 @@ function stackPie(students, attr, chartid) {
   
       for (tkey of terms_labels) {
           let term = students.filter(function(d){ return d[attr] == tkey });
-          let genders = d3.group(term, d => d.Gender);
+          let genders = d3.group(term, d => d.Sex);
   
           var genderKeyValues = []
           for (key of genders.keys()) {
@@ -356,7 +356,7 @@ function stackPie(students, attr, chartid) {
                     borderWidth: 5,
                     color: 'white',
                     anchor: function(context) {
-                      if (context.dataset.label == "Gender") {
+                      if (context.dataset.label == "Sex") {
                           return 'end'
                       } else {
                           return 'end'
@@ -422,7 +422,7 @@ function stackPie(students, attr, chartid) {
               {
                 data: genders_data,
                 backgroundColor: genders_colors,
-                label: "Gender",
+                label: "Sex",
                 labels: genders_labels
               }
             ],

@@ -155,7 +155,7 @@ three_pies_dict["geographic"] = {
     0: [92.7, 7.3],
     1: [ round(1717, 1717+52), round(52, 1717+52)],
 }
-three_pies_dict["geographic"] = {
+three_pies_dict["sport"] = {
   "labels": ['US', 'International'],
   
   0: [92.7, 7.3],

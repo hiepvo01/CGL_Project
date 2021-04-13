@@ -95,17 +95,17 @@ function resetCanvas(){
     $('.container-fluid').append(`
     <div class="row">
       <div class="col-12">
-        <div id="legend">
-            <div class="item male">Male</div>
-            <div class="item female">Female</div>
-        </div>
+        <ul class="legend">
+            <li class="item male"><span style="background-color:#00FFFF;"></span>Male</li>
+            <li class="item female"><span style="background-color:#FF6666;"></span>Female</li>
+        </ul>
         <canvas id="chart${i}"></canvas>
       </div>
       <div class="col-12">
-      <div id="legend">
-            <div class="item male">Male</div>
-            <div class="item female">Female</div>
-        </div>
+      <ul class="legend">
+        <li class="item male"><span style="background-color:#00FFFF;"></span>Male</li>
+        <li class="item female"><span style="background-color:#FF6666;"></span>Female</li>
+        </ul>
         <canvas id="chart${i+1}"></canvas>
       </div>
     </div>`)

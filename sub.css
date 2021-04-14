@@ -1189,6 +1189,11 @@ body {
     height: 400px;
   }
 
+  .story_li {
+    text-align: left;
+    font-size:20px;
+  }
+
   footer a{
     color: black;
   }

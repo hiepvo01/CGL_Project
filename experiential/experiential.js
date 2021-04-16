@@ -199,19 +199,23 @@ function testStackBar(result, j=false){
         }
     });
 }
+
 function changeTitle(title, id, j){
     let list = document.querySelector(id)
     list.innerHTML = title;
     var origin = document.querySelector("#title"); 
+    var ms = document.querySelector("#musicSport"); 
+    var term = document.querySelector("#term"); 
     if(title == "Music") {
         title = "Ensembles"
     }
     if (j) {
         origin.innerHTML = `# by Prior Term and Luther J-Term `;
     } else {
-        origin.innerHTML = `# by Prior Term and ${title} `;
+        origin.innerHTML = `# by ${ms.innerHTML} and ${term.innerHTML}`;
     }
 }
+
 
 function resetCanvas(){
     $('#canvas').remove();

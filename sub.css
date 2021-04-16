@@ -495,7 +495,7 @@ body {
     --------------------------------------------------------------*/
     .skills .progress {
       height: 60px;
-      display: block;
+      /* display: block; */
       background: none;
       border-radius: 0;
     }

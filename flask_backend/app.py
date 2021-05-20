@@ -68,7 +68,7 @@ def users():
 @app.route('/allData', methods=['GET'])
 # @jwt_required()
 def allData():
-    df = pd.read_csv(os.path.dirname(os.path.abspath(__file__)) + '\data\CGL_DataFinal_Mar2021.csv')
+    df = pd.read_csv(os.path.dirname(os.path.abspath(__file__)) + '/data/CGL_DataFinal_Mar2021.csv')
     resp = make_response(df.to_csv())
     resp.headers["Content-Disposition"] = "attachment; filename=all_data.csv"
     resp.headers["Access-Control-Allow-Origin"] = "*"

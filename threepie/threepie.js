@@ -248,7 +248,7 @@ function testChartPie(attr, chartid, luther) {
 function draw(attr){
   resetCanvas();
 
-  d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
+  d3.csv('https://vohi0311.pythonanywhere.com/allData').then(function(result) {
       resetCanvas();
       try {
         let chart3 = testChartPie(attr, 'chart3', 2);

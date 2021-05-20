@@ -263,7 +263,7 @@ function draw(attr){
   resetCanvas();
   d3.select('canvas').selectAll('*').remove();
 
-  d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
+  d3.csv('https://vohi0311.pythonanywhere.com/allData').then(function(result) {
       testChartPie(result, "2015-16", attr, 'chart1');
       testChartPie(result, "2016-17", attr, 'chart3');
       testChartPie(result, "2017-18", attr, 'chart5');
@@ -271,7 +271,7 @@ function draw(attr){
       changeTitle(attr)
   });
   
-  d3.csv('../backend/graphData/CGL_DataFinal_Mar2021.csv').then(function(result) {
+  d3.csv('https://vohi0311.pythonanywhere.com/allData').then(function(result) {
       testChartBar(result, "2015-16", attr, 'chart2');
       testChartBar(result, "2016-17", attr, 'chart4');
       testChartBar(result, "2017-18", attr, 'chart6');

@@ -25,7 +25,7 @@ function draw(data){
 }
 
 async function generateGraph() {
-    res = await fetch('http://127.0.0.1:5000/word_cloud').then(response => response.json())
+    res = await fetch('https://vohi0311.pythonanywhere.com/word_cloud').then(response => response.json())
     let allData = [];
     for (d in res.words) {
         console.log(d)

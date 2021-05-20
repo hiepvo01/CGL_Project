@@ -114,7 +114,7 @@ function resetCanvas(){
 
 function changeTitle(title){
   var origin = document.querySelector("#title"); 
-  origin.innerHTML = `Yearly Participation by Sex per ${title}`;
+  origin.innerHTML = `Comparisons by Sex 2015-19 per ${title}`;
 }
 
 function testChartPie(students, year, attr, chartid) {

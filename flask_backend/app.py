@@ -88,15 +88,15 @@ def financial(year):
     finalTerms = {}
     for k in terms:
         if k[0] not in finalTerms:
-            finalTerms[k[0]] = [terms[k]]
+            finalTerms[k[0]] = {k[1]:terms[k]}
         else:
-            finalTerms[k[0]].append(terms[k])
+            finalTerms[k[0]][k[1]] = terms[k]
     finalPrograms = {}
     for k in programs:
         if k[0] not in finalPrograms:
-            finalPrograms[k[0]] = [programs[k]]
+            finalPrograms[k[0]] = {k[1]:terms[k]}
         else:
-            finalPrograms[k[0]].append(programs[k])
+            finalPrograms[k[0]][k[1]] = terms[k]
     return jsonify(terms=finalTerms, programTypes=finalPrograms)
 
     resp = make_response(df.to_csv())

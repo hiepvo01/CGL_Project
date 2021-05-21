@@ -82,6 +82,23 @@ def financial(year):
     f.format(y=year)
     link = os.path.dirname(os.path.abspath(__file__)) + f
     df = pd.read_csv(link)
+    df["Need Category"] = df["Need Category"].str.lower()
+    terms = df.groupby(['Term 1','Need Category']).size().to_dict()
+    programs = df.groupby(['Program Type 1','Need Category']).size().to_dict()
+    finalTerms = {}
+    for k in terms:
+        if k[0] not in finalTerms:
+            finalTerms[k[0]] = [terms[k]]
+        else:
+            finalTerms[k[0]].append(terms[k])
+    finalPrograms = {}
+    for k in programs:
+        if k[0] not in finalPrograms:
+            finalPrograms[k[0]] = [programs[k]]
+        else:
+            finalPrograms[k[0]].append(programs[k])
+    return jsonify(terms=finalTerms, programTypes=finalPrograms)
+
     resp = make_response(df.to_csv())
     resp.headers["Content-Disposition"] = 'attachment; filename=financial_'+year+'.csv'
     resp.headers["Access-Control-Allow-Origin"] = "*"

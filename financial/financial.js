@@ -2,7 +2,7 @@ window.onload=function() {
     var marksCanvas = document.getElementById("marksChart");
 
     var marksData = {
-    labels: ['No', 'Very Low', 'Low', 'Med', 'High'],
+    labels: ['no', 'very low', 'low', 'med', 'high'],
     datasets: [{
         label: "Terms",
         backgroundColor: "rgba(200,0,0,0.2)",

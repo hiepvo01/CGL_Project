@@ -78,10 +78,10 @@ def allData():
 @app.route('/financial/<year>', methods=['GET'])
 # @jwt_required()
 def financial(year):
-    f = '/data/aid/{y} Study Abroad review by Jon.xlsx'.format(y=str(year))
+    f = '/data/aid/{y} Study Abroad review by Jon.csv'.format(y=str(year))
     f.format(y=year)
     link = os.path.dirname(os.path.abspath(__file__)) + f
-    df = pd.read_excel(link)
+    df = pd.read_csv(link)
     resp = make_response(df.to_csv())
     resp.headers["Content-Disposition"] = 'attachment; filename=financial_'+year+'.csv'
     resp.headers["Access-Control-Allow-Origin"] = "*"

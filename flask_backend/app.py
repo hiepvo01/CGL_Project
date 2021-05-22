@@ -88,22 +88,28 @@ def financial(year):
     finalTerms = {}
     for k in terms:
         if k[0] not in finalTerms:
-            finalTerms[k[0]] = {k[1]:terms[k]}
+            try:
+                finalTerms[k[0]] = {k[1]:terms[k]}
+            except:
+                continue
         else:
             finalTerms[k[0]][k[1]] = terms[k]
     finalPrograms = {}
     for k in programs:
         if k[0] not in finalPrograms:
-            finalPrograms[k[0]] = {k[1]:terms[k]}
+            try:
+                finalPrograms[k[0]] = {k[1]:programs[k]}
+            except:
+                continue
         else:
-            finalPrograms[k[0]][k[1]] = terms[k]
+            finalPrograms[k[0]][k[1]] = programs[k]
     return jsonify(terms=finalTerms, programTypes=finalPrograms)
 
-    resp = make_response(df.to_csv())
-    resp.headers["Content-Disposition"] = 'attachment; filename=financial_'+year+'.csv'
-    resp.headers["Access-Control-Allow-Origin"] = "*"
-    resp.headers["Content-Type"] = "text/csv"
-    return resp
+    # resp = make_response(df.to_csv())
+    # resp.headers["Content-Disposition"] = 'attachment; filename=financial_'+year+'.csv'
+    # resp.headers["Access-Control-Allow-Origin"] = "*"
+    # resp.headers["Content-Type"] = "text/csv"
+    # return resp
 
 @app.route('/register', methods=['POST'])
 def register():

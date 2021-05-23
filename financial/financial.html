@@ -49,6 +49,16 @@
         </header>
         <main>
             <div id="title">Participation by Financial Aid Need Level</div>
+            <div class="dropdown">
+              <a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                Select Attribute
+              </a>
+            
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" onClick='choice("Terms")'>Terms</a></li>
+                <li><a class="dropdown-item" onClick='choice("Program Types")'>Program Types</a></li>
+              </ul>
+            </div>
             <canvas id="marksChart" width="600" height="300"></canvas>
         </main>
     </body>

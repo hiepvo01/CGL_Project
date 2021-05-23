@@ -10,7 +10,17 @@ function choice(attr){
     localStorage.setItem("choice", attr)
     document.getElementById('dropdownMenuLink').innerHTML = attr
 
-    document.getElementById("marksChart").innerHTML = ""
+    canvas = document.getElementById("marksChart")
+    canvas.remove();
+
+    can = document.createElement("canvas")
+    can.setAttribute("id", "marksChart")
+    can.style.height = "300";
+    can.style.width = "600";
+    main = document.getElementById('main')
+    main.innerHTML = "";
+    main.appendChild(can)
+
     if(localStorage.getItem("choice")){
         console.log(localStorage.getItem("choice"))
         let selected = ""

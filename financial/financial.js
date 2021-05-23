@@ -10,14 +10,15 @@ function choice(attr){
     localStorage.setItem("choice", attr)
     document.getElementById('dropdownMenuLink').innerHTML = attr
 
-    canvas = document.getElementById("marksChart")
-    canvas.remove();
+    if (document.getElementById("marksChart")) {
+        canvas = document.getElementById("marksChart")
+        canvas.remove();
+    }
 
     can = document.createElement("canvas")
     can.setAttribute("id", "marksChart")
-    can.style.height = "300";
-    can.style.width = "600";
-    main = document.getElementById('main')
+
+    main = document.getElementById('mainChart')
     main.innerHTML = "";
     main.appendChild(can)
 

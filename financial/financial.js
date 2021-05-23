@@ -8,9 +8,14 @@ function checkAttr(atr, d){
 
 window.onload=function() {
     var marksCanvas = document.getElementById("marksChart");
+    let allData = []
+    let years = ["15_16", "16_17", "17_18", "18_19"]
+    for (year in years){
+        d3.json('https://vohi0311.pythonanywhere.com/financial/'+year).then(function(result) {
+            
+        })
+    }
     d3.json('https://vohi0311.pythonanywhere.com/financial/15_16').then(function(result) {
-        let termsList = [0,0,0,0,0]
-        let programsList = [0,0,0,0,0]
         let labels = ['no', 'very low', 'low', 'med', 'high']
         let allData = []
         var myColor = d3.schemeAccent

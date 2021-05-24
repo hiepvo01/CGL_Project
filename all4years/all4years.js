@@ -421,8 +421,9 @@ function stackPie(students, attr, chartid) {
         })
       }
 
-function draw(attr){
-  if (userCheck()) {
+async function draw(attr){
+  let check = await userCheck();
+  if (check == true) {
     resetCanvas();
     d3.select('canvas').selectAll('*').remove();
   
@@ -432,7 +433,7 @@ function draw(attr){
         // stackPie(result, attr, 'chart3');
         changeTitle(attr)
     });
-  } else {
+  } else if (check == false){
     location.href = "../user/login/login.html"
   }
 }

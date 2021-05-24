@@ -76,7 +76,7 @@ def allData():
     return resp
 
 @app.route('/financial/<year>', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def financial(year):
     f = '/data/aid/{y} Study Abroad review by Jon.csv'.format(y=str(year))
     f.format(y=year)

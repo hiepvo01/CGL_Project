@@ -1,14 +1,21 @@
 async function userCheck() {
     if(localStorage.getItem('access_token')) {
         try {
-            await fetch('https://vohi0311.pythonanywhere.com/allData', {
+            let result = await fetch('https://vohi0311.pythonanywhere.com/financial/15_19', {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('access_token')}`
                 }
-            }) 
-            return true;
+            }).then((response) => {
+                return response.json()
+            })
+            if (result["msg"] == "Token has expired") {
+                alert("Session time out, please log in again")
+                return false
+            } else {
+                console.log("Token accepted") 
+                return true;
+            }
         } catch (e) {
-            alert("Session time out, please log in again")
             return false
         }
     } else {

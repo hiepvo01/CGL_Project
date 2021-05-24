@@ -1,9 +1,9 @@
-function userCheck() {
+async function userCheck() {
     if(localStorage.getItem('access_token')) {
         try {
-            fetch('https://vohi0311.pythonanywhere.com/financial/15_16', {
+            await fetch('https://vohi0311.pythonanywhere.com/allData', {
             headers: {
-                Authorization: `token ${localStorage.getItem('access_token')}`
+                Authorization: `Bearer ${localStorage.getItem('access_token')}`
                 }
             }) 
             return true;

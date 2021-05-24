@@ -6,14 +6,21 @@ function checkAttr(atr, d){
     }
 }
 
-function choice(attr){
+async function choice(attr){
     if (localStorage.getItem('access_token')) {
         try {
-            fetch('https://vohi0311.pythonanywhere.com/financial/15_19', {
+            let result = await fetch('https://vohi0311.pythonanywhere.com/financial/15_19', {
             headers: {
-                Authorization: `token ${localStorage.getItem('access_token')}`
+                Authorization: `Bearer ${localStorage.getItem('access_token')}`
                 }
+            }).then((response) => {
+                return response.json()
             })
+            
+            if(result == {"msg": "Token has expired" }) {
+                alert("Session Time out, please login again")
+                location.href = "../user/login/login.html"
+            }
             localStorage.setItem("choice", attr)
             document.getElementById('dropdownMenuLink').innerHTML = attr
         
@@ -38,41 +45,40 @@ function choice(attr){
                     selected = "programTypes"
                 }
                 var marksCanvas = document.getElementById("marksChart");
-                d3.json('https://vohi0311.pythonanywhere.com/financial/15_19').then(function(result) {
-                    let labels = ['no', 'very low', 'low', 'med', 'high']
-                    let allData = []
-                    var myColor = d3.schemeAccent
-                    let idx = 0
-                    for (term in result[selected]){
-                        let data = {}
-                        for (l of labels){
-                            data[l] = 0
-                        }
-                        for (l of labels){
-                            try{
-                                data[l] = result[selected][term][l]
-                            } catch(e) { continue}
-                        }
-                        var values = Object.keys(data).map(function(key){
-                            return data[key];
-                        });
-                        allData.push({
-                            label: term,
-                            backgroundColor: myColor[idx],
-                            data: values
-                        })
-                        idx += 1
-                    }
-            
-                    var marksData = {
-                    labels: ['no', 'very low', 'low', 'med', 'high'],
-                    datasets: allData
-                    };
                 
-                    var radarChart = new Chart(marksCanvas, {
-                    type: 'bar',
-                    data: marksData
+                let labels = ['no', 'very low', 'low', 'med', 'high']
+                let allData = []
+                var myColor = d3.schemeAccent
+                let idx = 0
+                for (term in result[selected]){
+                    let data = {}
+                    for (l of labels){
+                        data[l] = 0
+                    }
+                    for (l of labels){
+                        try{
+                            data[l] = result[selected][term][l]
+                        } catch(e) { continue}
+                    }
+                    var values = Object.keys(data).map(function(key){
+                        return data[key];
                     });
+                    allData.push({
+                        label: term,
+                        backgroundColor: myColor[idx],
+                        data: values
+                    })
+                    idx += 1
+                }
+        
+                var marksData = {
+                labels: ['no', 'very low', 'low', 'med', 'high'],
+                datasets: allData
+                };
+            
+                var radarChart = new Chart(marksCanvas, {
+                type: 'bar',
+                data: marksData
                 });
             }
         } catch (e) {

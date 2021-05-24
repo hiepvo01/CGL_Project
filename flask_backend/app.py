@@ -66,7 +66,7 @@ def users():
     return jsonify(result)
 
 @app.route('/allData', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def allData():
     df = pd.read_csv(os.path.dirname(os.path.abspath(__file__)) + '/data/CGL_DataFinal_Mar2021.csv')
     resp = make_response(df.to_csv())

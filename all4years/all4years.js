@@ -421,8 +421,9 @@ function stackPie(students, attr, chartid) {
         })
       }
 
-async function draw(attr){
-  let check = await userCheck();
+function draw(attr){
+  // let check = await userCheck();
+  let check = true;
   if (check == true) {
     resetCanvas();
     d3.select('canvas').selectAll('*').remove();

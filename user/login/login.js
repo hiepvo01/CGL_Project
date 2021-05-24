@@ -1,20 +1,8 @@
-var test = new XMLHttpRequest();
-    test.onreadystatechange= function () {
-        if (test.readyState==4) {
-            //handle response
-            if(test.status==401) {
-                alert("Session Timeout! Please log in again");
-                location.href="../user/login.html"
-            } else {
-            }
-        }
-    }
-
 async function Login(){
     email = document.getElementById('email').value
     password = document.getElementById('password').value
 
-    let url = 'https://hiepvo01.pythonanywhere.com/login'
+    let url = 'https://vohi0311.pythonanywhere.com/login'
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         if (document.getElementById('login-alert')) {
@@ -25,28 +13,19 @@ async function Login(){
             alert = document.createElement('div')
             alert.classList.add('alert')
             alert.setAttribute('id', 'login-alert')
-            if (JSON.parse(xhr.responseText).message == 'Login Successful') {
+            if (JSON.parse(xhr.responseText).message == 'Login succeeded') {
                 alert.classList.add('alert-success')
                 localStorage.setItem('email', email)
+                location.href="../../index.html"
             } else {
                 alert.classList.add('alert-danger')
             }
-            console.log(xhr.responseText)
             alert.innerHTML = JSON.parse(xhr.responseText).message
             form = document.getElementById('login-form')
             form.appendChild(alert)
 
-            if (JSON.parse(xhr.responseText).message == 'Login Successful') {
-                localStorage.setItem('access_token', JSON.parse(xhr.responseText).access_token);
-        
-                if(localStorage.getItem('access_token')) {
-                    console.log('he;p')
-                    test.open("GET", "https://hiepvo01.pythonanywhere.com/user/" + localStorage.getItem('email'), true);
-                    test.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('access_token'));
-                    test.setRequestHeader("Accept","text/plain");
-                    test.send()
-                }
-
+            if (JSON.parse(xhr.responseText).message == 'Login succeeded') {
+                localStorage.setItem('access_token', JSON.parse(xhr.responseText).access_token)
             }
         }
     }

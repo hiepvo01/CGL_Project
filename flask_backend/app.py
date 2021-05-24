@@ -66,7 +66,7 @@ def users():
     return jsonify(result)
 
 @app.route('/allData', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def allData():
     df = pd.read_csv(os.path.dirname(os.path.abspath(__file__)) + '/data/CGL_DataFinal_Mar2021.csv')
     resp = make_response(df.to_csv())
@@ -76,7 +76,7 @@ def allData():
     return resp
 
 @app.route('/financial/<year>', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def financial(year):
     f = '/data/aid/{y} Study Abroad review by Jon.csv'.format(y=str(year))
     f.format(y=year)
@@ -104,12 +104,6 @@ def financial(year):
         else:
             finalPrograms[k[0]][k[1]] = programs[k]
     return jsonify(terms=finalTerms, programTypes=finalPrograms)
-
-    # resp = make_response(df.to_csv())
-    # resp.headers["Content-Disposition"] = 'attachment; filename=financial_'+year+'.csv'
-    # resp.headers["Access-Control-Allow-Origin"] = "*"
-    # resp.headers["Content-Type"] = "text/csv"
-    # return resp
 
 @app.route('/register', methods=['POST'])
 def register():

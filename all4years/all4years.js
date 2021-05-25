@@ -194,7 +194,7 @@ function testChartBar(students, attr, chartid) {
         } else {
           keyValues.push([key.substring(0, key.length-2), terms.get(key).length ])
         }
-      } else{
+      } else if (key != ""){
         keyValues.push([ key, terms.get(key).length ])
       }
     }

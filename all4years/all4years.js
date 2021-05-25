@@ -185,12 +185,25 @@ function testChartBar(students, attr, chartid) {
     terms_colors = []
 
     var keyValues = []
+    console.log(terms.keys())
+    let large = 0;
     for (key of terms.keys()) {
-      keyValues.push([ key, terms.get(key).length ])
+      if(parseInt(key)){
+        if(parseInt(key) > 8){
+          large += terms.get(key).length
+        } else {
+          keyValues.push([key.substring(0, key.length-2), terms.get(key).length ])
+        }
+      } else{
+        keyValues.push([ key, terms.get(key).length ])
+      }
     }
     keyValues.sort(function compare(kv1, kv2) {
       return kv2[0].localeCompare(kv1[0])
     })
+    if (large > 0){
+      keyValues.push(["9+", large])
+    }
 
     for (val of keyValues) {
       terms_labels.push(val[0]);

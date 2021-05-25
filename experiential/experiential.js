@@ -138,15 +138,45 @@ function testStackBar(result, j=false){
     }
 
     let datasets = [];
+    let over = [];
     for (priorTerm in prior_data){
+        console.log(prior_data[priorTerm])
+        if(parseInt(priorTerm)) {
+            if(parseInt(priorTerm) > 8){
+                if (over.length == 0) {
+                    over = prior_data[priorTerm]
+                } else {
+                    let added = [];
+                    for(let i=0; i < over.length; i++) {
+                        added.push(over[i]+prior_data[priorTerm][i])
+                    }
+                    over = added;
+                }
+            } else {
+                let partial = {
+                    label: parseInt(priorTerm),
+                    backgroundColor: myColor(priorTerm),
+                    data: prior_data[priorTerm]
+                }
+                datasets.push(partial);
+            }
+        } else {
+            let partial = {
+                label: priorTerm,
+                backgroundColor: myColor(priorTerm),
+                data: prior_data[priorTerm]
+            }
+            datasets.push(partial);
+        }
+    }
+    if (over.length > 0) {
         let partial = {
-            label: priorTerm,
-            backgroundColor: myColor(priorTerm),
-            data: prior_data[priorTerm]
+            label: "9+",
+            backgroundColor: "#FF6666",
+            data: over
         }
         datasets.push(partial);
     }
-
     var barChartData = {
         labels: labels,
         datasets: datasets,

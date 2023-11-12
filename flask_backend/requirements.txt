@@ -1,4 +1,5 @@
 argcomplete==1.10.0
+Gunicorn
 bcrypt==3.2.0
 beautifulsoup4==4.8.0
 blinker==1.4

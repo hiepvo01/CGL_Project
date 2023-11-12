@@ -1,7 +1,7 @@
 async function userCheck() {
     if(localStorage.getItem('access_token')) {
         try {
-            let result = await fetch('https://vohi0311.pythonanywhere.com/financial/15_19', {
+            let result = await fetch('https://cgl-project.onrender.com/financial/15_19', {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('access_token')}`
                 }

@@ -256,7 +256,7 @@ function draw(j=false){
     resetCanvas();
     d3.select('canvas').selectAll('*').remove();
   
-    d3.csv('https://vohi0311.pythonanywhere.com/allData').then(function(result) {
+    d3.csv('https://cgl-project.onrender.com/allData').then(function(result) {
         testStackBar(result, j);
     });
   }

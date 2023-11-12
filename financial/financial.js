@@ -31,7 +31,7 @@ function choice(attr){
             selected = "programTypes"
         }
         var marksCanvas = document.getElementById("marksChart");
-        d3.json('https://vohi0311.pythonanywhere.com/financial/15_19').then(function(result) {
+        d3.json('https://cgl-project.onrender.com/financial/15_19').then(function(result) {
             let labels = ['no', 'very low', 'low', 'med', 'high']
             let allData = []
             var myColor = d3.schemeAccent

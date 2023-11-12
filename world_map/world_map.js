@@ -222,7 +222,7 @@ function world_map(){
 function draw(attr){
   resetCanvas();
 
-  d3.csv('https://vohi0311.pythonanywhere.com/allData').then(function(result) {
+  d3.csv('https://cgl-project.onrender.com/allData').then(function(result) {
       resetCanvas();
       try {
         let chart4 = testChartPie(attr, 'chart4', 3);

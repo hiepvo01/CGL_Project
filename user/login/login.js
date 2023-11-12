@@ -2,7 +2,7 @@ async function Login(){
     email = document.getElementById('email').value
     password = document.getElementById('password').value
 
-    let url = 'https://vohi0311.pythonanywhere.com/login'
+    let url = 'https://cgl-project.onrender.com/login'
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         if (document.getElementById('login-alert')) {
